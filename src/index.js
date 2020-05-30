@@ -1,10 +1,4 @@
-import { createElement } from "./component/component";
+import BuildDom from './components/BuildDom/BuildDom';
 
-function createHeader () {
-  const headerRoot = createElement ('div', 'header');
-  headerRoot.append(
-    document.body
-  );
-}
-
-createHeader();
+const buildDom = new BuildDom(document.body);
+buildDom.buildDom();
