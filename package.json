@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development webpack --mode development",
-    "build": "cross-env NODE_ENV=production webpack --mode production"
+    "build": "cross-env NODE_ENV=production webpack --mode production",
+    "watch": "cross-env NODE_ENV=development webpack --mode development --watch"
   },
   "keywords": [
     "weather",
@@ -42,6 +43,8 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
+    "babel-preset-env": "^1.7.0",
+    "mapbox-gl": "^1.10.1",
     "normalize.css": "^8.0.1"
   }
 }
