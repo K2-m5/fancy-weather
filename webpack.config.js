@@ -30,9 +30,10 @@ const jsLoader = () => {
     options: {
       presets: [
         '@babel/preset-env'
-      ]
+      ],
+      exclude: /mapbox-gl/
     }
-  }]
+  }];
 
   return loaders
 }
@@ -88,7 +89,7 @@ module.exports = {
         }, 'css-loader']
       },
       {
-        test: /\.jpg$|\.svg$/,
+        test: /\.jpg$|\.svg$|\.png$/,
         loader: 'url-loader',
         options: {
           limit: false,
