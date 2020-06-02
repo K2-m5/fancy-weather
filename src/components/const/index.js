@@ -1,1 +1,1 @@
-export { default as mapKey } from './const';
+export * from './const';

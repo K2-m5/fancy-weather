@@ -1,3 +1,23 @@
+*, :after, :before {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  justify-content: space-between;
+  min-width: 320px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 2%;
+  color: #ffffff;
+  background-position: 50%;
+  background-size: cover;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+}
+
 /* Control block */
 
 .controls_block{
@@ -39,6 +59,27 @@
   cursor: pointer;
   transition: .2s ease-in-out;
   user-select: none;
+}
+
+.button-base::before{
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: -75px;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(90deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,.5));
+  transform: skewX(-45deg);
+}
+
+.button-base:hover{
+  background-color: green;
+}
+
+.button-base::before:hover{
+  background-color: green;
+  left: 150px;
+  transition: .5s ease-in-out;
 }
 
 .change-picture{
@@ -218,3 +259,85 @@
   border-left-width: 0;
   border-radius: 0 5px 5px 0;
 }
+
+/* Weather block */
+
+
+.information-block{
+  display: flex;
+  flex: 1 1;
+}
+
+.text_base{
+  font-weight: 700;
+  font-size: 21px;
+  font-family: Arial,Helvetica,sans-serif;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.weather_block{
+  display: flex;
+
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.weather_today_block--city_country, .weather_today_block--date_time {
+  margin: 5px;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: rgba(0,0,0,.5);
+}
+
+.weather_today_block--date_time{
+  font-size: 1.15em;
+  text-transform: capitalize;
+}
+
+.weather-today{
+  display: grid;
+  align-items: center;
+  grid-template-areas:
+      "temp sign"
+      "temp prop";
+  grid-template-columns: 2fr 1fr;
+  margin: 5px;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: rgba(0,0,0,.5);
+  justify-items: center;
+}
+
+.weather_days_block{
+  display: flex;
+  justify-content: space-around;
+  margin: 5px;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: rgba(0,0,0,.5);
+}
+
+.weather_today_block--sign{
+  width: 80%;
+  grid-area: sign;
+}
+
+/* Map box */
+
+.map-block{
+  min-height: 350px;
+  margin: 5px;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: rgba(0,0,0,.5);
+}
+
+.map{
+  height: 87%;
+  max-height: 572px;
+  border-radius: 25px;
+}
+
+

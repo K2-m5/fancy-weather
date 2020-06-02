@@ -1,6 +1,6 @@
 import { createElement } from '../component/component';
 
-export default class BuildDom {
+export class BuildDom {
   constructor(rootElement) {
     this.rootElement = rootElement;
   }
@@ -30,13 +30,15 @@ export default class BuildDom {
 
     switchUnit.setAttribute('for','switch-input');
     switchInput.setAttribute('checked','true');
-    switchSpan.setAttribute('data-on','&degF');
-    switchSpan.setAttribute('data-off','&degC');
+    switchSpan.setAttribute('data-on','&deg;F');
+    switchSpan.setAttribute('data-off','&deg;C');
 
     const searchPanel = createElement('div', 'wrapper', 'search-panel');
     const formSearchRoot = createElement('form', 'search-root');
     const inputSearch = createElement('input', 'input_base');
     const buttonSearch = createElement('button', 'button-base', 'search-btn');
+
+    buttonSearch.innerText = 'Search';
 
     formSearchRoot.append(
       inputSearch,
@@ -78,28 +80,62 @@ export default class BuildDom {
   }
 
   createWeatherBlock() {
-    const bodyRoot = createElement('div', 'weather-block');
+    const bodyRoot = createElement('section', 'information-block');
+    const weatherBlock = createElement('div', 'weather_block');
+    const weatherCity = createElement('div', 'weather_today_block--city_country', 'text_base');
+    const weatherDate =createElement('div', 'text_base', 'weather_today_block--date_time');
     const weatherToday = createElement('div', 'weather-today');
-    const weatherNextDay = createElement('div', 'weather-next-day');
+    const weatherTodayTemp = createElement('div', 'text_base', 'weather_today_block--temp')
+    const weatherTodayImg = createElement('img', 'weather_today_block--sign')
+
+    const weatherNextDayList = createElement('div', 'weather_days_block');
+    const weatherNextDay1 = createElement('div', 'day_block');
+    const weatherNextDay2 = createElement('div', 'day_block');
+    const weatherNextDay3 = createElement('div', 'day_block');
+    const mapBlock = createElement ('div', 'map-block');
+    const map = createElement ('div', 'map');
+    map.id = 'map';
+    weatherTodayImg.setAttribute('src', 'assets/img/rain.png')
+
+    weatherCity.innerText = 'Belarus, Minsk';
+    weatherDate.innerText = toString(new Date);
+    weatherTodayTemp.innerText = '+54';
+    weatherNextDay1.innerText = '+55';
+    weatherNextDay2.innerText = '+55';
+    weatherNextDay3.innerText = '+55';
+
+    weatherToday.append(
+      weatherTodayTemp,
+      weatherTodayImg
+    )
+
+    weatherNextDayList.append(
+      weatherNextDay1,
+      weatherNextDay2,
+      weatherNextDay3
+    )
+
+    weatherBlock.append(
+      weatherCity,
+      weatherDate,
+      weatherToday,
+      weatherNextDayList
+    )
+
+    mapBlock.append(
+      map
+    )
 
     bodyRoot.append(
-      weatherToday,
-      weatherNextDay
+      weatherBlock,
+      mapBlock
     )
 
     this.rootElement.append(bodyRoot);
   }
 
-  createMapBlock() {
-    const mapBlock = createElement ('div', 'map-block');
-    mapBlock.id = 'map-block';
-
-    this.rootElement.append(mapBlock);
-  }
-
   buildDom() {
     this.createControlBlock();
     this.createWeatherBlock();
-    this.createMapBlock();
   }
 }
