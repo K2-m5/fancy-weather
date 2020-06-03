@@ -5,13 +5,11 @@ import { WeatherApi } from './components/WeatherApi/WeatherApi';
 
 import './styles.css';
 
-const buildDom = new BuildDom(document.body);
-buildDom.buildDom();
-
-addMap(mapKey, 50, 60);
+const buildDom = new BuildDom(document.body, openWeatherKeys);
 
 const weather = new WeatherApi(openWeatherKeys);
-
 const data = weather.getCurrentWeatherByCity('Minsk');
+
+buildDom.buildDom();
 
 console.log(data);
