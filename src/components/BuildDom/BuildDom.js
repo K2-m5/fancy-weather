@@ -19,9 +19,19 @@ export class BuildDom {
     const headerRoot = createElement('div', 'controls_block');
     const controlBlock = this.controlBlock.createControlBlock(headerRoot);
     const searchBlock = new SearchBlock (async searchString => {
-      const data = await this.weatherApi.getCurrentWeatherByCity(searchString)
+      const data = await this.weatherApi.getCurrentWeatherByCity(searchString);
       
-      this.weatherTodayApp.updateData(data.name);
+      console.log(data);
+      this.weatherTodayApp.updateData(
+        data.name,
+        data.main.temp,
+        data.weather[0].main,
+        data.main.feels_like,
+        data.wind.speed,
+        data.main.humidity
+        );
+      
+      this.mapBlock.updateMap(data.coord.lat, data.coord.lon);
     });
 
     headerRoot.append(
