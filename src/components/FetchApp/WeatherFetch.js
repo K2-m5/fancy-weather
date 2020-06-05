@@ -1,5 +1,4 @@
-
-export class WeatherApi {
+export class WeatherFetch {
   constructor(openWeatherKeys) {
     this.apiKeys = openWeatherKeys
   }
@@ -14,11 +13,13 @@ export class WeatherApi {
       return data;
   }
 
-  getForecastByCity(city) {
+  async getForecastByCity(city) {
       const url = `${this.apiKeys.URL + this.apiKeys.FORECAST
       }q=${city
       }${this.apiKeys.LANG}${this.apiKeys.UNITS}${this.apiKeys.KEY}`;
 
-      return getDataJson(url);
+      const response = await fetch(url);
+      const data = await response.json();
+      return data;
   }
 }

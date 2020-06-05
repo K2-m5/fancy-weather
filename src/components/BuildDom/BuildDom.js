@@ -3,7 +3,8 @@ import { WeatherToday } from './WeatherToday';
 import { ControlBlock } from './ControlBlock';
 import { SearchBlock } from './SearchBlock';
 import { MapBlock } from './MapBlock';
-import { WeatherApi } from '../WeatherApi/WeatherApi'
+import { WeatherFetch } from '../FetchApp/WeatherFetch'
+import { CoordUserFetch } from '../FetchApp/CoordUserFetch';
 import { openWeatherKeys, mapKey } from '../const/const';
  
 export class BuildDom {
@@ -12,14 +13,16 @@ export class BuildDom {
     this.weatherTodayApp = new WeatherToday();
     this.controlBlock = new ControlBlock();
     this.mapBlock = new MapBlock();
-    this.weatherApi = new WeatherApi(openWeatherKeys);
+    this.weatherFetch = new WeatherFetch(openWeatherKeys);
+    this.coordUserFetch = new CoordUserFetch();
+    
   }
 
   createControlBlock() {
     const headerRoot = createElement('div', 'controls_block');
     const controlBlock = this.controlBlock.createControlBlock(headerRoot);
     const searchBlock = new SearchBlock (async searchString => {
-      const data = await this.weatherApi.getCurrentWeatherByCity(searchString);
+      const data = await this.weatherFetch.getCurrentWeatherByCity(searchString);
       
       console.log(data);
       this.weatherTodayApp.updateData(
@@ -46,6 +49,7 @@ export class BuildDom {
     const bodyRoot = createElement('section', 'information-block');
     const weatherBlock = this.weatherTodayApp.createWeatherTodayBlock();
     const map = this.mapBlock.createMapBlock();
+    this.mapBlock.addMap(mapKey);
 
     bodyRoot.append(
       weatherBlock,
@@ -58,6 +62,5 @@ export class BuildDom {
   buildDom() {
     this.createControlBlock();
     this.createWeatherBlock();
-    this.mapBlock.addMap(mapKey, 30, 60);
   }
 }
