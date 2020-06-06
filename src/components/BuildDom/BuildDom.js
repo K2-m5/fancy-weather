@@ -88,7 +88,7 @@ export class BuildDom {
           feels: feels_like,
           wind: speed,
           humidity,
-          weatherImgCode: weather[0].icon
+          weatherImgCode: weather[0].main
         },
         n3dw
       );
