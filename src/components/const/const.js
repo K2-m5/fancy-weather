@@ -5,6 +5,8 @@ export const openWeatherKeys = {
   URL: 'https://api.openweathermap.org/data/2.5/',
   FORECAST: 'forecast?',
   WEATHER: 'weather?',
+  LAT: 'lat=',
+  LONG: '&lon=',
   LANG: '&lang=',
   UNITS: '&units=',
 };

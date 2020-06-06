@@ -1,7 +1,12 @@
 import { createElement } from '../component/createElement';
+import mapboxgl from 'mapbox-gl'
 
 export class MapBlock {
-  constructor() {
+  constructor(mapKey) {
+    this.mapboxGl = mapboxgl;
+    this.map = null;
+
+    this.mapboxGl.accessToken = mapKey;
   }
 
   createMapBlock() {
@@ -9,45 +14,29 @@ export class MapBlock {
     const map = createElement ('div', 'map');
     map.id = 'map';
 
-    mapBlock.append(
-      map
-    )
+    mapBlock.append(map);
 
     return mapBlock;
   }
 
-  addMap(mapKey) {
-    const success = (pos) => {
-      var crd = pos.coords;
-    
-      const data = {
-        lon:crd.longitude,
-        lat:crd.latitude
-      };
-
-      var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
-  
-      mapboxgl.accessToken = mapKey;
+  addMap(lon, lat) {
       this.map = new mapboxgl.Map({
-          container: 'map', // container id
-          style: 'mapbox://styles/mapbox/dark-v10', //hosted style id
-          center: [data.lon, data.lat], // starting position
-          zoom: 12 // starting zoom
-      })
-  
+          container: 'map',
+          style: 'mapbox://styles/mapbox/dark-v10',
+          center: [lon, lat],
+          zoom: 12
+      });
+
       return(map);
-
     };
-    
 
-    navigator.geolocation.getCurrentPosition(success);
-  
-  };
+  updateMap(lon, lat) {
+    if (!this.map) return;
 
-  updateMap(lat, lon) {
     this.map.flyTo({
-        center: [lon, lat],
-        zoom: 8,
+      center: [lon, lat],
+      zoom: 12,
     });
   }
+
 }

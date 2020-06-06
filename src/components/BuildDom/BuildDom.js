@@ -12,7 +12,7 @@ export class BuildDom {
     this.rootElement = rootElement;
     this.weatherTodayApp = new WeatherToday();
     this.controlBlock = new ControlBlock();
-    this.mapBlock = new MapBlock();
+    this.mapBlock = new MapBlock(mapKey);
     this.weatherFetch = new WeatherFetch(openWeatherKeys);
     this.coordUserFetch = new CoordUserFetch();
     
@@ -22,19 +22,34 @@ export class BuildDom {
     const headerRoot = createElement('div', 'controls_block');
     const controlBlock = this.controlBlock.createControlBlock(headerRoot);
     const searchBlock = new SearchBlock (async searchString => {
-      const data = await this.weatherFetch.getCurrentWeatherByCity(searchString);
+      const {
+        name,
+        main: {
+          temp,
+          humidity,
+          feels_like
+        },
+        weather,
+        wind: {
+          speed
+        },
+        coord: {
+          lon,
+          lat
+        }
+      } = await this.weatherFetch.getCurrentWeatherByCity(searchString);
       
-      console.log(data);
       this.weatherTodayApp.updateData(
-        data.name,
-        data.main.temp,
-        data.weather[0].main,
-        data.main.feels_like,
-        data.wind.speed,
-        data.main.humidity
-        );
+        name,
+        temp,
+        weather[0].main,
+        feels_like,
+        speed,
+        humidity,
+        weather[0].icon
+      );
       
-      this.mapBlock.updateMap(data.coord.lat, data.coord.lon);
+      this.mapBlock.updateMap(lon, lat);
     });
 
     headerRoot.append(
@@ -47,16 +62,55 @@ export class BuildDom {
 
   createWeatherBlock() {
     const bodyRoot = createElement('section', 'information-block');
-    const weatherBlock = this.weatherTodayApp.createWeatherTodayBlock();
+
     const map = this.mapBlock.createMapBlock();
-    this.mapBlock.addMap(mapKey);
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      const { coords: { longitude, latitude } } = pos;
+      const dataNextDay = await this.weatherFetch.getForecastByCoords(longitude, latitude);
+      
+      const {
+        name,
+        main: {
+          temp,
+          humidity,
+          feels_like
+        },
+        weather,
+        wind: {
+          speed
+        }
+      } = await this.weatherFetch.getCurrentWeatherByCoords(longitude, latitude);
+      const n3dw = this.getNext3DaysWeather(dataNextDay.list);
+      const weatherBlock = this.weatherTodayApp.createWeatherTodayBlock(
+        bodyRoot, {
+          city: name,
+          tempToday: temp,
+          weather: weather[0].main,
+          feels: feels_like,
+          wind: speed,
+          humidity,
+          weatherImgCode: weather[0].icon
+        }, n3dw);
 
-    bodyRoot.append(
-      weatherBlock,
-      map
-    );
+      bodyRoot.append(
+        weatherBlock,
+        map
+      );
+      
+      this.rootElement.append(bodyRoot);
 
-    this.rootElement.append(bodyRoot);
+      this.mapBlock.addMap(longitude, latitude);
+    });
+  }
+
+  getNext3DaysWeather(weatherList) {
+    const todayExcluded = weatherList.slice(8);
+    const result = [];
+    for (let i = 3; i < todayExcluded.length; i += 8) {
+      result.push(todayExcluded[i]);
+    }
+
+    return result.slice(0, 3);
   }
 
   buildDom() {

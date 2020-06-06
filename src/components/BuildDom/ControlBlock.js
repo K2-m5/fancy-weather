@@ -29,8 +29,8 @@ export class ControlBlock {
 
     switchUnit.setAttribute('for','switch-input');
     switchInput.setAttribute('checked','true');
-    switchSpan.setAttribute('data-on', ''.concat(String.fromCharCode(176), 'C'));
-    switchSpan.setAttribute('data-off',''.concat(String.fromCharCode(176), 'F'));
+    switchSpan.setAttribute('data-on', 'C'.concat(String.fromCharCode(176)));
+    switchSpan.setAttribute('data-off', 'F'.concat(String.fromCharCode(176)));
 
     switchUnit.append(
       switchInput,
