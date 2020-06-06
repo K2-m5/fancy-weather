@@ -1,0 +1,30 @@
+{
+  "extends": "airbnb-base/legacy",
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js"]
+      },
+      "alias": {
+        "map": [
+          ["@", "./src"],
+          ["@modules", ".src/modules/"]
+        ]
+      }
+    }
+  },
+  "ignorePatterns": ["webpack.config.js", "node_modules/"],
+  "rules": {
+    "linebreak-style": 0,
+    "no-param-reassign": 0
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2017
+  },
+  "parser": "babel-eslint" 
+}
