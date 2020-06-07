@@ -3,13 +3,8 @@ import * as dayjs from 'dayjs';
 
 
 const weatherToday = createElement('div', 'weather-today');
-const weatherTodayImg = createElement('img', 'weather_today_block--sign');
+
 const weatherTodayInfoList = createElement('div', 'weather_today_block--info_list');
-
-const weatherTodayInfoListFeels = createElement('div', 'text_base', 'weather_today_block--info_list-item');
-const weatherTodayInfoListWind = createElement('div', 'text_base', 'weather_today_block--info_list-item');
-const weatherTodayInfoListHumidity = createElement('div', 'text_base', 'weather_today_block--info_list-item');
-
 const weatherNextDayList = createElement('div', 'weather_days_block');
 export class WeatherToday {
   constructor() {
@@ -18,17 +13,21 @@ export class WeatherToday {
     this.weatherDate = createElement('div', 'text_base', 'weather_today_block--date_time');
     this.weatherTodayTemp = createElement('div', 'text_base', 'weather_today_block--temp');
     this.weatherTodayInfoListWeather = createElement('div', 'text_base', 'weather_today_block--info_list-item');
+    this.weatherTodayInfoListFeels = createElement('div', 'text_base', 'weather_today_block--info_list-item');
+    this.weatherTodayInfoListWind = createElement('div', 'text_base', 'weather_today_block--info_list-item');
+    this.weatherTodayInfoListHumidity = createElement('div', 'text_base', 'weather_today_block--info_list-item');
+    this.weatherTodayImg = createElement('img', 'weather_today_block--sign');
 
   }
 
   updateData(city, tempToday, weather, feels, wind, humidity, weatherImg) {
     this.weatherCity.innerText = city;
-    this.weatherTodayTemp.innerText = tempToday;
+    this.weatherTodayTemp.innerText = this.temperatureKtoC(tempToday);
     this.weatherTodayInfoListWeather.innerText = weather;
-    weatherTodayInfoListFeels.innerText = `Feels like: ${feels}`;
-    weatherTodayInfoListWind.innerText = `Wind: ${wind}`;
-    weatherTodayInfoListHumidity.innerText = `Humidity: ${humidity}`;
-    weatherTodayImg.setAttribute('src', `assets/img/${weatherImg}.png`);
+    this.weatherTodayInfoListFeels.innerText = `Feels like: ${feels}`;
+    this.weatherTodayInfoListWind.innerText = `Wind: ${wind}`;
+    this.weatherTodayInfoListHumidity.innerText = `Humidity: ${humidity}`;
+    this.weatherTodayImg.setAttribute('src', `assets/img/${weatherImg}.png`);
   }
 
   createWeatherTodayBlock(rootElement, currentWeather, next3DaysWeather) {
@@ -44,12 +43,12 @@ export class WeatherToday {
 
     this.updateDate();
     this.weatherCity.innerText = city;
-    this.weatherTodayTemp.innerText = tempToday - 273.15 + ''.concat(String.fromCharCode(176));
+    this.weatherTodayTemp.innerText = this.temperatureKtoC(tempToday);
     this.weatherTodayInfoListWeather.innerText = weather;
-    weatherTodayInfoListFeels.innerText = `Feels like: ${feels}`;
-    weatherTodayInfoListWind.innerText = `Wind: ${wind}`;
-    weatherTodayInfoListHumidity.innerText = `Humidity: ${humidity}`;
-    weatherTodayImg.setAttribute('src', `assets/img/${weatherImgCode}.png`);
+    this.weatherTodayInfoListFeels.innerText = `Feels like: ${feels}`;
+    this.weatherTodayInfoListWind.innerText = `Wind: ${wind}`;
+    this.weatherTodayInfoListHumidity.innerText = `Humidity: ${humidity}`;
+    this.weatherTodayImg.setAttribute('src', `assets/img/${weatherImgCode}.png`);
 
     const dayToLabelMap = {
       '0': 'Sunday',
@@ -74,14 +73,14 @@ export class WeatherToday {
 
     weatherTodayInfoList.append(
       this.weatherTodayInfoListWeather,
-      weatherTodayInfoListFeels,
-      weatherTodayInfoListWind,
-      weatherTodayInfoListHumidity
+      this.weatherTodayInfoListFeels,
+      this.weatherTodayInfoListWind,
+      this.weatherTodayInfoListHumidity
     );
 
     weatherToday.append(
       this.weatherTodayTemp,
-      weatherTodayImg,
+      this.weatherTodayImg,
       weatherTodayInfoList
     );
 
@@ -105,7 +104,7 @@ export class WeatherToday {
     const image = createElement('img', 'day_block--sign');
 
     weekDay.innerText = day;
-    temperature.innerText = Math.round(temp - 273.15) + ''.concat(String.fromCharCode(176));
+    temperature.innerText = this.temperatureKtoC(temp);
     image.setAttribute('src', `assets/img/${imageCode}.png`);
 
     dayRoot.append(
@@ -118,12 +117,15 @@ export class WeatherToday {
   }
 
   updateDate() {
-    const currentDate = new Date(),
-          currentHours = ('0' + currentDate.getHours()).slice(-2),
-          currentMinutes = ('0' + currentDate.getMinutes()).slice(-2),
-          currentSeconds = ('0' + currentDate.getSeconds()).slice(-2);
+    const currentDate = new Date();
+    const currentHours = ('0' + currentDate.getHours()).slice(-2);
+    const currentMinutes = ('0' + currentDate.getMinutes()).slice(-2);
+    const currentSeconds = ('0' + currentDate.getSeconds()).slice(-2);
 
     this.weatherDate.innerText = `${currentHours} : ${currentMinutes} : ${currentSeconds}`;
   }
 
+  temperatureKtoC(t) {
+    return ((Math.round(t - 273.15) + ''.concat(String.fromCharCode(176))));
+  } 
 }
