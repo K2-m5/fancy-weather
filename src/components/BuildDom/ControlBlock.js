@@ -3,6 +3,9 @@ import { createElement } from '../component/createElement';
 export class ControlBlock {
   constructor(rootElement) {
     this.rootElement = rootElement;
+    this.switchUnitTemp = createElement('div', 'switch-temp');
+    this.switchUnit = createElement('label', 'switch-label');
+    this.switchInput = createElement('input', 'switch-input');
   }
 
   createControlBlock(rootElement) {
@@ -21,25 +24,29 @@ export class ControlBlock {
     languageBY.setAttribute('value', 'by');
     languageBY.innerText = 'BY';
 
-    const switchUnitTemp = createElement('div', 'switch-temp');
-    const switchUnit = createElement('label', 'switch-label');
-    const switchInput = createElement('input', 'switch-input');
+
+
     const switchSpan = createElement('span', 'switch-span');
     const switchSpanHandle = createElement('span', 'switch-handle');
 
-    switchUnit.setAttribute('for','switch-input');
-    switchInput.setAttribute('checked','true');
+    this.switchUnit.setAttribute('for', 'switch-input');
+    this.switchInput.setAttribute('type', 'checkbox');
+    this.switchInput.setAttribute('checked', 'false');
     switchSpan.setAttribute('data-on', 'C'.concat(String.fromCharCode(176)));
     switchSpan.setAttribute('data-off', 'F'.concat(String.fromCharCode(176)));
 
-    switchUnit.append(
-      switchInput,
+    this.switchUnit.addEventListener('click', () => {
+      this.switchBtnClickHandler();
+    });
+
+    this.switchUnit.append(
+      this.switchInput,
       switchSpan,
       switchSpanHandle
     );
 
-    switchUnitTemp.append(
-      switchUnit
+    this.switchUnitTemp.append(
+      this.switchUnit
     );
 
     changeLanguage.append(
@@ -51,9 +58,18 @@ export class ControlBlock {
     buttonPanel.append(
       changePicture,
       changeLanguage,
-      switchUnitTemp
+      this.switchUnitTemp
     );
 
     return buttonPanel;
-  };
+  }
+
+  switchBtnClickHandler() {
+    if (this.switchInput.checked) {
+      this.switchInput.removeAttribute('checked');
+    } else {
+      this.switchInput.setAttribute('checked', 'true');
+    }
+  }
+
 }
