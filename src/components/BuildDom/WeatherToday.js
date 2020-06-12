@@ -1,9 +1,7 @@
 import { createElement } from '../component/createElement';
 import * as dayjs from 'dayjs';
 
-
 const weatherToday = createElement('div', 'weather-today');
-
 const weatherTodayInfoList = createElement('div', 'weather_today_block--info_list');
 const weatherNextDayList = createElement('div', 'weather_days_block');
 export class WeatherToday {
@@ -17,7 +15,6 @@ export class WeatherToday {
     this.weatherTodayInfoListWind = createElement('div', 'text_base', 'weather_today_block--info_list-item');
     this.weatherTodayInfoListHumidity = createElement('div', 'text_base', 'weather_today_block--info_list-item');
     this.weatherTodayImg = createElement('img', 'weather_today_block--sign');
-
   }
 
   updateData(city, tempToday, weather, feels, wind, humidity, weatherImg) {
@@ -127,5 +124,6 @@ export class WeatherToday {
 
   temperatureKtoC(t) {
     return ((Math.round(t - 273.15) + ''.concat(String.fromCharCode(176))));
-  } 
+  }
+
 }

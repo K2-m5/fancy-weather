@@ -1,18 +1,19 @@
 import { createElement } from '../component/createElement';
 
 export class ControlBlock {
-  constructor(rootElement) {
+  constructor(rootElement, changeLanguageHandler) {
     this.rootElement = rootElement;
     this.switchUnitTemp = createElement('div', 'switch-temp');
     this.switchUnit = createElement('label', 'switch-label');
     this.switchInput = createElement('input', 'switch-input');
+    this.changeLanguage = createElement('select', 'drop-list-language');
+    this.changeLanguageHandler = changeLanguageHandler;
   }
 
-  createControlBlock(rootElement) {
+  createControlBlock() {
     const buttonPanel = createElement('div', 'wrapper', 'button-panel');
     const changePicture = createElement('button', 'button-base', 'change-picture');
-
-    const changeLanguage = createElement('select', 'drop-list-language');
+    this.changeLanguage = createElement('select', 'drop-list-language');
     const languageEN = createElement('option', 'item-language-en');
     const languageRU = createElement('option', 'item-language-ru');
     const languageBY = createElement('option', 'item-language-by');
@@ -23,8 +24,6 @@ export class ControlBlock {
     languageRU.innerText = 'RU';
     languageBY.setAttribute('value', 'by');
     languageBY.innerText = 'BY';
-
-
 
     const switchSpan = createElement('span', 'switch-span');
     const switchSpanHandle = createElement('span', 'switch-handle');
@@ -39,6 +38,10 @@ export class ControlBlock {
       this.switchBtnClickHandler();
     });
 
+    this.changeLanguage.addEventListener('change', () => {
+      this.changeLanguageHandler(this.changeLanguage.value);
+    });
+
     this.switchUnit.append(
       this.switchInput,
       switchSpan,
@@ -49,7 +52,7 @@ export class ControlBlock {
       this.switchUnit
     );
 
-    changeLanguage.append(
+    this.changeLanguage.append(
       languageEN,
       languageRU,
       languageBY
@@ -57,7 +60,7 @@ export class ControlBlock {
 
     buttonPanel.append(
       changePicture,
-      changeLanguage,
+      this.changeLanguage,
       this.switchUnitTemp
     );
 

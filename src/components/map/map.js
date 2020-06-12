@@ -1,5 +1,5 @@
 const addMap = (mapKey, x=50, y=50) => {
-  
+
   var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 
   mapboxgl.accessToken = 'pk.eyJ1IjoiazItbTUiLCJhIjoiY2thdTZzZTdwMDg4ejJzbGZmNWhueWxqYyJ9.OXbeiDM2288nOEa_m4K92w';

@@ -1,7 +1,7 @@
 import { createElement } from '../component/createElement';
 
 export class SearchBlock {
-  constructor(searchHandler){
+  constructor(searchHandler) {
     this.searchHandler = searchHandler;
     this.searchString = '';
   }
@@ -28,7 +28,7 @@ export class SearchBlock {
 
     searchPanel.append(
       formSearchRoot
-    )
+    );
 
     return searchPanel;
   }

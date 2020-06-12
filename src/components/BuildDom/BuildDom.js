@@ -6,21 +6,36 @@ import { MapBlock } from './MapBlock';
 import { WeatherFetch } from '../FetchApp/WeatherFetch'
 import { CoordUserFetch } from '../FetchApp/CoordUserFetch';
 import { openWeatherKeys, mapKey } from '../const/const';
- 
+
 export class BuildDom {
   constructor(rootElement) {
     this.rootElement = rootElement;
     this.weatherTodayApp = new WeatherToday();
-    this.controlBlock = new ControlBlock();
+    this.controlBlock = new ControlBlock(rootElement, this.changeLanguageHandler);
     this.mapBlock = new MapBlock(mapKey);
     this.weatherFetch = new WeatherFetch(openWeatherKeys);
     this.coordUserFetch = new CoordUserFetch();
   }
 
+  changeLanguageHandler(lang) {
+    switch (lang) {
+      case 'ru':
+        console.log('Ура!');
+        break;
+      case 'en':
+        console.log('Yeap!');
+        break;
+      case 'by':
+        console.log('Таракан гнать!');
+        break;
+    }
+  };
+
   createControlBlock() {
     const headerRoot = createElement('div', 'controls_block');
-    const controlBlock = this.controlBlock.createControlBlock(headerRoot);
-    const searchBlock = new SearchBlock (async searchString => {
+    const controlBlock = this.controlBlock.createControlBlock();
+
+    const searchBlock = new SearchBlock(async searchString => {
       const {
         name,
         main: {

@@ -35,7 +35,7 @@ export class MapBlock {
 
     this.map.flyTo({
       center: [lon, lat],
-      zoom: 12,
+      zoom: 12
     });
   }
 
