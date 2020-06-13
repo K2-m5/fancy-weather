@@ -12,56 +12,65 @@ export class BuildDom {
     this.rootElement = rootElement;
     this.weatherTodayApp = new WeatherToday();
     this.mapBlock = new MapBlock(mapKey);
-    this.controlBlock = new ControlBlock(rootElement, BuildDom.changeLanguageHandler);
+    this.controlBlock = new ControlBlock(rootElement);
     this.weatherFetch = new WeatherFetch(openWeatherKeys);
     this.coordUserFetch = new CoordUserFetch();
+    this.searchBlock = new SearchBlock();
     this.result = [];
   }
 
-  static changeLanguageHandler(lang) {
-    MapBlock.renderDataLanguageMap(lang);
-    SearchBlock.renderDataLanguage(lang);
+  changeLanguageHandler(lang) {
+    this.mapBlock.renderDataLanguageMap(lang);
+    this.searchBlock.renderDataLanguage(lang);
+  }
+
+  async searchHandler(searchString) {
+    const {
+      name,
+      main: {
+        temp,
+        humidity,
+        feels_like
+      },
+      weather,
+      wind: {
+        speed
+      },
+      coord: {
+        lon,
+        lat
+      }
+    } = await this.weatherFetch.getCurrentWeatherByCity(searchString);
+
+    this.weatherTodayApp.updateData(
+      name,
+      temp,
+      weather[0].main,
+      feels_like,
+      speed,
+      humidity,
+      weather[0].icon
+    );
+
+    this.mapBlock.updateMap(lon, lat);
   }
 
   createControlBlock() {
     const headerRoot = createElement('div', 'controls_block');
-    const controlBlock = this.controlBlock.createControlBlock();
+    headerRoot.append(
+      this.controlBlock.createControlBlock(),
+      this.searchBlock.createSearchBlock()
+    );
 
-    const searchBlock = new SearchBlock(async searchString => {
-      const {
-        name,
-        main: {
-          temp,
-          humidity,
-          feelsLike
-        },
-        weather,
-        wind: {
-          speed
-        },
-        coord: {
-          lon,
-          lat
-        }
-      } = await this.weatherFetch.getCurrentWeatherByCity(searchString);
-
-      this.weatherTodayApp.updateData(
-        name,
-        temp,
-        weather[0].main,
-        feelsLike,
-        speed,
-        humidity,
-        weather[0].icon
-      );
-
-      this.mapBlock.updateMap(lon, lat);
+    this.controlBlock.changeLanguage.addEventListener('change', (event) => {
+      this.changeLanguageHandler(event.target.value);
     });
 
-    headerRoot.append(
-      controlBlock,
-      searchBlock.createSearchBlock()
-    );
+    this.searchBlock.formSearchRoot.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      this.searchHandler(this.searchBlock.inputSearch.value);
+    });
 
     this.rootElement.append(headerRoot);
   }
@@ -79,7 +88,7 @@ export class BuildDom {
         main: {
           temp,
           humidity,
-          feelsLike
+          feels_like
         },
         weather,
         wind: {
@@ -92,7 +101,7 @@ export class BuildDom {
           city: name,
           tempToday: temp,
           weather: weather[0].main,
-          feels: feelsLike,
+          feels: feels_like,
           wind: speed,
           humidity,
           weatherImgCode: weather[0].main

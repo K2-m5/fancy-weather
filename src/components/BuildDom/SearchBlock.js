@@ -2,40 +2,34 @@ import { createElement } from '../component/createElement';
 import { words } from '../const/words';
 
 export class SearchBlock {
-  constructor(searchHandler) {
-    this.searchHandler = searchHandler;
+  constructor() {
     this.searchString = '';
     this.buttonSearch = createElement('button', 'button-base', 'search-btn');
+    this.inputSearch = createElement('input', 'input_base');
+    this.formSearchRoot = createElement('form', 'search-root');
   }
 
   createSearchBlock() {
     const searchPanel = createElement('div', 'wrapper', 'search-panel');
-    const formSearchRoot = createElement('form', 'search-root');
-    const inputSearch = createElement('input', 'input_base');
-    formSearchRoot.setAttribute('name', 'search');
-    formSearchRoot.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      this.searchHandler(inputSearch.value);
-    });
+    this.formSearchRoot.setAttribute('name', 'search');
+    
     this.buttonSearch.id = 'buttonSearch';
     this.buttonSearch.innerText = 'Search';
 
-    formSearchRoot.append(
-      inputSearch,
+    this.formSearchRoot.append(
+      this.inputSearch,
       this.buttonSearch
     );
 
     searchPanel.append(
-      formSearchRoot
+      this.formSearchRoot
     );
 
     return searchPanel;
   }
 
-  static renderDataLanguage(lang) {
+  renderDataLanguage(lang) {
     let buttonSearchText = words.find(item => item.language === lang);
-    const buttonSearch = document.getElementById('buttonSearch');
-    buttonSearch.innerText = buttonSearchText.searchElements;
+    this.buttonSearch.innerText = buttonSearchText.searchElements;
   }
 }

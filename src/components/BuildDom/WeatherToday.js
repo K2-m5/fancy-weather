@@ -4,6 +4,7 @@ import * as dayjs from 'dayjs';
 const weatherToday = createElement('div', 'weather-today');
 const weatherTodayInfoList = createElement('div', 'weather_today_block--info_list');
 const weatherNextDayList = createElement('div', 'weather_days_block');
+
 export class WeatherToday {
   constructor() {
     this.weatherBlock = createElement('div', 'weather_block');

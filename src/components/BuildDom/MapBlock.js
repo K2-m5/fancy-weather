@@ -8,9 +8,9 @@ export class MapBlock {
     this.map = null;
     this.mapBlock = createElement('div', 'map-block');
     this.mapboxGl.accessToken = mapKey;
-    this.latitude = createElement('div', 'map_latitude');
+    this.latitude = createElement('div', 'text_base', 'map_latitude');
     this.latitudeValue = createElement('span', 'map_latitude');
-    this.longitude = createElement('div', 'map_longitude');
+    this.longitude = createElement('div', 'text_base', 'map_longitude');
     this.longitudeValue = createElement('span', 'map_longitude');
   }
 
@@ -55,11 +55,9 @@ export class MapBlock {
     this.longitudeValue.innerText = lon;
   }
 
-  static renderDataLanguageMap(lang) {
+  renderDataLanguageMap(lang) {
     let wordText = words.find(item => item.language === lang);
-    const latitude = document.getElementById('latitude');
-    const longitude = document.getElementById('longitude');
-    latitude.innerText = wordText.latitude;
-    longitude.innerText = wordText.longitude;
+    this.latitude.innerText = wordText.latitude;
+    this.longitude.innerText = wordText.longitude;
   }
 }

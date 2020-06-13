@@ -5,17 +5,11 @@
 }
 
 body{
-  justify-content: space-between;
-  min-width: 320px;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 2%;
-  color: #ffffff;
-  background-position: 50%;
-  background-size: cover;
   position: relative;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 2%;
 }
 
 /* Control block */
@@ -198,7 +192,6 @@ body{
   background: #fff;
   border-radius: 4px;
   box-shadow: 1px 1px 5px rgba(0,0,0,.2);
-  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(40%,#fff),to(#f0f0f0));
   background-image: linear-gradient(180deg,#fff 40%,#f0f0f0);
   transition: left .15s ease-out;
 }
@@ -214,7 +207,6 @@ body{
   background: #f9f9f9;
   border-radius: 6px;
   box-shadow: inset 0 1px rgba(0,0,0,.02);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(#eee),to(#fff));
   background-image: linear-gradient(180deg,#eee,#fff);
 }
 
@@ -379,9 +371,25 @@ body{
 }
 
 .map{
-  height: 87%;
-  max-height: 572px;
+  height: 85%;
+  width: auto;
   border-radius: 25px;
 }
 
+.map_latitude {
+  margin: 5px;
+}
 
+.map_longitude {
+  margin: 5px;
+}
+
+@media (max-width: 640px) {
+  .information-block{
+    flex-direction: column
+  }
+
+  .map-block{
+    width: auto;
+  }
+}
