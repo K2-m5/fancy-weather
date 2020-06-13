@@ -3,7 +3,7 @@ import { WeatherToday } from './WeatherToday';
 import { ControlBlock } from './ControlBlock';
 import { SearchBlock } from './SearchBlock';
 import { MapBlock } from './MapBlock';
-import { WeatherFetch } from '../FetchApp/WeatherFetch'
+import { WeatherFetch } from '../FetchApp/WeatherFetch';
 import { CoordUserFetch } from '../FetchApp/CoordUserFetch';
 import { openWeatherKeys, mapKey } from '../const/const';
 
@@ -11,25 +11,17 @@ export class BuildDom {
   constructor(rootElement) {
     this.rootElement = rootElement;
     this.weatherTodayApp = new WeatherToday();
-    this.controlBlock = new ControlBlock(rootElement, this.changeLanguageHandler);
     this.mapBlock = new MapBlock(mapKey);
+    this.controlBlock = new ControlBlock(rootElement, BuildDom.changeLanguageHandler);
     this.weatherFetch = new WeatherFetch(openWeatherKeys);
     this.coordUserFetch = new CoordUserFetch();
+    this.result = [];
   }
 
-  changeLanguageHandler(lang) {
-    switch (lang) {
-      case 'ru':
-        console.log('Ура!');
-        break;
-      case 'en':
-        console.log('Yeap!');
-        break;
-      case 'by':
-        console.log('Таракан гнать!');
-        break;
-    }
-  };
+  static changeLanguageHandler(lang) {
+    MapBlock.renderDataLanguageMap(lang);
+    SearchBlock.renderDataLanguage(lang);
+  }
 
   createControlBlock() {
     const headerRoot = createElement('div', 'controls_block');
@@ -41,7 +33,7 @@ export class BuildDom {
         main: {
           temp,
           humidity,
-          feels_like
+          feelsLike
         },
         weather,
         wind: {
@@ -57,7 +49,7 @@ export class BuildDom {
         name,
         temp,
         weather[0].main,
-        feels_like,
+        feelsLike,
         speed,
         humidity,
         weather[0].icon
@@ -87,7 +79,7 @@ export class BuildDom {
         main: {
           temp,
           humidity,
-          feels_like
+          feelsLike
         },
         weather,
         wind: {
@@ -100,7 +92,7 @@ export class BuildDom {
           city: name,
           tempToday: temp,
           weather: weather[0].main,
-          feels: feels_like,
+          feels: feelsLike,
           wind: speed,
           humidity,
           weatherImgCode: weather[0].main
@@ -120,12 +112,11 @@ export class BuildDom {
 
   getNext3DaysWeather(weatherList) {
     const todayExcluded = weatherList.slice(8);
-    const result = [];
+    this.result = [];
     for (let i = 3; i < todayExcluded.length; i += 8) {
-      result.push(todayExcluded[i]);
+      this.result.push(todayExcluded[i]);
     }
-
-    return result.slice(0, 3);
+    return this.result.slice(0, 3);
   }
 
   buildDom() {

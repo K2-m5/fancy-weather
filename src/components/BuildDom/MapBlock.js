@@ -1,5 +1,6 @@
 import { createElement } from '../component/createElement';
 import mapboxgl from 'mapbox-gl';
+import { words } from '../const/words';
 
 export class MapBlock {
   constructor(mapKey) {
@@ -7,12 +8,27 @@ export class MapBlock {
     this.map = null;
     this.mapBlock = createElement('div', 'map-block');
     this.mapboxGl.accessToken = mapKey;
+    this.latitude = createElement('div', 'map_latitude');
+    this.latitudeValue = createElement('span', 'map_latitude');
+    this.longitude = createElement('div', 'map_longitude');
+    this.longitudeValue = createElement('span', 'map_longitude');
   }
 
   createMapBlock() {
     const map = createElement('div', 'map');
+
     map.id = 'map';
-    this.mapBlock.append(map);
+    this.latitude.id = 'latitude';
+    this.longitude.id = 'longitude';
+    this.latitude.innerText = 'Latitude';
+    this.longitude.innerText = 'Longitude';
+    this.latitude.append(this.latitudeValue);
+    this.longitude.append(this.longitudeValue);
+    this.mapBlock.append(
+      map,
+      this.latitude,
+      this.longitude
+    );
     return this.mapBlock;
   }
 
@@ -23,6 +39,8 @@ export class MapBlock {
       center: [lon, lat],
       zoom: 12
     });
+    this.latitudeValue.innerText = lat;
+    this.longitudeValue.innerText = lon;
     return (this.map);
   }
 
@@ -33,5 +51,15 @@ export class MapBlock {
       center: [lon, lat],
       zoom: 12
     });
+    this.latitudeValue.innerText = lat;
+    this.longitudeValue.innerText = lon;
+  }
+
+  static renderDataLanguageMap(lang) {
+    let wordText = words.find(item => item.language === lang);
+    const latitude = document.getElementById('latitude');
+    const longitude = document.getElementById('longitude');
+    latitude.innerText = wordText.latitude;
+    longitude.innerText = wordText.longitude;
   }
 }
