@@ -224,7 +224,6 @@ body{
 .search-root{
   display: flex;
   width: 100%;
-  padding: 10px;
 }
 
 .input_base{
@@ -363,7 +362,6 @@ body{
 
 .map-block{
   width: 39%;
-  min-height: 350px;
   margin: 5px;
   padding: 20px;
   border-radius: 5px;
@@ -376,6 +374,11 @@ body{
   border-radius: 25px;
 }
 
+.coordinate{
+  display: flex;
+  justify-content: space-between;
+}
+
 .map_latitude {
   margin: 5px;
 }
@@ -385,6 +388,14 @@ body{
 }
 
 @media (max-width: 640px) {
+  .controls_block{
+    flex-direction: column;
+  }
+
+  .search-panel{
+    width: auto;
+  }
+
   .information-block{
     flex-direction: column
   }
