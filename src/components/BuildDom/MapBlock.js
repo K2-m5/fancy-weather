@@ -8,26 +8,32 @@ export class MapBlock {
     this.map = null;
     this.mapBlock = createElement('div', 'map-block');
     this.mapboxGl.accessToken = mapKey;
-    this.latitude = createElement('div', 'text_base', 'map_latitude');
-    this.latitudeValue = createElement('span', 'map_latitude');
-    this.longitude = createElement('div', 'text_base', 'map_longitude');
-    this.longitudeValue = createElement('span', 'map_longitude');
+    this.latitude = createElement('div', 'text_base', 'latitude');
+    this.latitudeValue = createElement('div', 'text_base', 'latitude_value');
+    this.longitude = createElement('div', 'text_base', 'longitude');
+    this.longitudeValue = createElement('div', 'text_base', 'longitude_value');
   }
 
   createMapBlock() {
     const map = createElement('div', 'map');
-
+    const coordinateLat = createElement('div', 'coordinate');
+    const coordinateLong = createElement('div', 'coordinate');
     map.id = 'map';
-    this.latitude.id = 'latitude';
-    this.longitude.id = 'longitude';
+
     this.latitude.innerText = 'Latitude';
     this.longitude.innerText = 'Longitude';
-    this.latitude.append(this.latitudeValue);
-    this.longitude.append(this.longitudeValue);
+    coordinateLat.append(
+      this.latitude,
+      this.latitudeValue
+    );
+    coordinateLong.append(
+      this.longitude,
+      this.longitudeValue
+    );
     this.mapBlock.append(
       map,
-      this.latitude,
-      this.longitude
+      coordinateLat,
+      coordinateLong
     );
     return this.mapBlock;
   }

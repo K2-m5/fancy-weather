@@ -17,6 +17,7 @@ export class BuildDom {
     this.coordUserFetch = new CoordUserFetch();
     this.searchBlock = new SearchBlock();
     this.result = [];
+    this.bodyRoot = createElement('section', 'information-block');
   }
 
   changeLanguageHandler(lang) {
@@ -25,34 +26,19 @@ export class BuildDom {
   }
 
   async searchHandler(searchString) {
-    const {
-      name,
-      main: {
-        temp,
-        humidity,
-        feels_like
-      },
-      weather,
-      wind: {
-        speed
-      },
-      coord: {
-        lon,
-        lat
-      }
-    } = await this.weatherFetch.getCurrentWeatherByCity(searchString);
+    const weatherData = await this.weatherFetch.getCurrentWeatherByCity(searchString);
 
     this.weatherTodayApp.updateData(
-      name,
-      temp,
-      weather[0].main,
-      feels_like,
-      speed,
-      humidity,
-      weather[0].icon
+      weatherData.name,
+      weatherData.main.temp,
+      weatherData.weather[0].main,
+      weatherData.main.feels_like,
+      weatherData.wind.speed,
+      weatherData.main.humidity,
+      weatherData.weather[0].icon
     );
 
-    this.mapBlock.updateMap(lon, lat);
+    this.mapBlock.updateMap(weatherData.coord.lon, weatherData.coord.lat);
   }
 
   createControlBlock() {
@@ -76,46 +62,37 @@ export class BuildDom {
   }
 
   createWeatherBlock() {
-    const bodyRoot = createElement('section', 'information-block');
-
     const map = this.mapBlock.createMapBlock();
-    navigator.geolocation.getCurrentPosition(async (pos) => {
-      const { coords: { longitude, latitude } } = pos;
-      const dataNextDay = await this.weatherFetch.getForecastByCoords(longitude, latitude);
-
-      const {
-        name,
-        main: {
-          temp,
-          humidity,
-          feels_like
-        },
-        weather,
-        wind: {
-          speed
-        }
-      } = await this.weatherFetch.getCurrentWeatherByCoords(longitude, latitude);
+    navigator.geolocation.getCurrentPosition(async () => {
+      const cityData = await this.coordUserFetch.getPlaceByIp();
+      const dataNextDay = await this.weatherFetch.getForecastByCoords(
+        cityData.loc.slice(8),
+        cityData.loc.slice(0, 5)
+      );
+      const weatherDataToDay = await this.weatherFetch.getCurrentWeatherByCoords(
+        cityData.loc.slice(8),
+        cityData.loc.slice(0, 5)
+      );
       const n3dw = this.getNext3DaysWeather(dataNextDay.list);
       this.weatherTodayApp.createWeatherTodayBlock(
-        bodyRoot, {
-          city: name,
-          tempToday: temp,
-          weather: weather[0].main,
-          feels: feels_like,
-          wind: speed,
-          humidity,
-          weatherImgCode: weather[0].main
+        this.bodyRoot, {
+          city: weatherDataToDay.name,
+          tempToday: weatherDataToDay.main.temp,
+          weather: weatherDataToDay.weather[0].main,
+          feels: weatherDataToDay.main.feels_like,
+          wind: weatherDataToDay.wind.speed,
+          humidity: weatherDataToDay.main.humidity,
+          weatherImgCode: weatherDataToDay.weather[0].main
         },
         n3dw
       );
 
-      bodyRoot.append(
+      this.bodyRoot.append(
         map
       );
 
-      this.rootElement.append(bodyRoot);
-
-      this.mapBlock.addMap(longitude, latitude);
+      this.rootElement.append(this.bodyRoot);
+      this.mapBlock.addMap(cityData.loc.slice(8, 13), cityData.loc.slice(0, 5));
     });
   }
 
