@@ -16,7 +16,7 @@ export class BuildDom {
     this.weatherFetch = new WeatherFetch(openWeatherKeys);
     this.coordUserFetch = new CoordUserFetch();
     this.searchBlock = new SearchBlock();
-    this.result = [];
+    this.forecastData = [];
     this.bodyRoot = createElement('section', 'information-block');
   }
 
@@ -27,8 +27,9 @@ export class BuildDom {
 
   async searchHandler(searchString) {
     const weatherData = await this.weatherFetch.getCurrentWeatherByCity(searchString);
+    const dataNextDay = await this.weatherFetch.getForecastByCity(searchString);
 
-    this.weatherTodayApp.updateData(
+    this.weatherTodayApp.updateWeatherData(
       weatherData.name,
       weatherData.main.temp,
       weatherData.weather[0].main,
@@ -37,6 +38,9 @@ export class BuildDom {
       weatherData.main.humidity,
       weatherData.weather[0].icon
     );
+
+    const n3dw = this.getNext3DaysWeather(dataNextDay.list);
+    this.weatherTodayApp.updateForecastData(n3dw);
 
     this.mapBlock.updateMap(weatherData.coord.lon, weatherData.coord.lat);
   }
@@ -74,6 +78,7 @@ export class BuildDom {
         cityData.loc.slice(0, 5)
       );
       const n3dw = this.getNext3DaysWeather(dataNextDay.list);
+
       this.weatherTodayApp.createWeatherTodayBlock(
         this.bodyRoot, {
           city: weatherDataToDay.name,
@@ -82,7 +87,7 @@ export class BuildDom {
           feels: weatherDataToDay.main.feels_like,
           wind: weatherDataToDay.wind.speed,
           humidity: weatherDataToDay.main.humidity,
-          weatherImgCode: weatherDataToDay.weather[0].main
+          weatherImgCode: weatherDataToDay.weather[0].icon
         },
         n3dw
       );
@@ -97,12 +102,16 @@ export class BuildDom {
   }
 
   getNext3DaysWeather(weatherList) {
-    const todayExcluded = weatherList.slice(8);
-    this.result = [];
-    for (let i = 3; i < todayExcluded.length; i += 8) {
-      this.result.push(todayExcluded[i]);
+    const currentDate = new Date().toDateString();
+    const newDayIndex = weatherList.findIndex(
+      (listItem) => currentDate !== new Date(listItem.dt_txt).toDateString()
+    );
+    const todayExcluded = weatherList.slice(newDayIndex);
+    this.forecastData = [];
+    for (let i = 4; i < todayExcluded.length; i += 8) {
+      this.forecastData.push(todayExcluded[i]);
     }
-    return this.result.slice(0, 3);
+    return this.forecastData.slice(0, 3);
   }
 
   buildDom() {

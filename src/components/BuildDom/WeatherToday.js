@@ -1,9 +1,16 @@
+/* eslint-disable camelcase */
 import { createElement } from '../component/createElement';
 import * as dayjs from 'dayjs';
 
-const weatherToday = createElement('div', 'weather-today');
-const weatherTodayInfoList = createElement('div', 'weather_today_block--info_list');
-const weatherNextDayList = createElement('div', 'weather_days_block');
+const dayToLabelMap = {
+  0: 'Sunday',
+  1: 'Monday',
+  2: 'Tuesday',
+  3: 'Wednesday',
+  4: 'Thursday',
+  5: 'Friday',
+  6: 'Saturday'
+};
 
 export class WeatherToday {
   constructor() {
@@ -18,14 +25,14 @@ export class WeatherToday {
     this.weatherTodayImg = createElement('img', 'weather_today_block--sign');
   }
 
-  updateData(city, tempToday, weather, feels, wind, humidity, weatherImg) {
+  updateWeatherData(city, tempToday, weather, feels, wind, humidity, weatherImg) {
     this.weatherCity.innerText = city;
     this.weatherTodayTemp.innerText = this.temperatureKtoC(tempToday);
     this.weatherTodayInfoListWeather.innerText = weather;
-    this.weatherTodayInfoListFeels.innerText = `Feels like: ${feels}`;
+    this.weatherTodayInfoListFeels.innerText = `Feels like: ${this.temperatureKtoC(feels)}`;
     this.weatherTodayInfoListWind.innerText = `Wind: ${wind}`;
     this.weatherTodayInfoListHumidity.innerText = `Humidity: ${humidity}`;
-    this.weatherTodayImg.setAttribute('src', `assets/img/${weatherImg}.png`);
+    this.weatherTodayImg.setAttribute('src', `http://openweathermap.org/img/w/${weatherImg}.png`);
   }
 
   createWeatherTodayBlock(rootElement, currentWeather, next3DaysWeather) {
@@ -38,27 +45,20 @@ export class WeatherToday {
       humidity,
       weatherImgCode
     } = currentWeather;
+    const weatherToday = createElement('div', 'weather-today');
+    const weatherTodayInfoList = createElement('div', 'weather_today_block--info_list');
+    const weatherNextDayList = createElement('div', 'weather_days_block');
 
     this.updateDate();
     this.weatherCity.innerText = city;
     this.weatherTodayTemp.innerText = this.temperatureKtoC(tempToday);
     this.weatherTodayInfoListWeather.innerText = weather;
-    this.weatherTodayInfoListFeels.innerText = `Feels like: ${feels}`;
+    this.weatherTodayInfoListFeels.innerText = `Feels like: ${this.temperatureKtoC(feels)}`;
     this.weatherTodayInfoListWind.innerText = `Wind: ${wind}`;
     this.weatherTodayInfoListHumidity.innerText = `Humidity: ${humidity}`;
-    this.weatherTodayImg.setAttribute('src', `assets/img/${weatherImgCode}.png`);
+    this.weatherTodayImg.setAttribute('src', `http://openweathermap.org/img/w/${weatherImgCode}.png`);
 
-    const dayToLabelMap = {
-      '0': 'Sunday',
-      '1': 'Monday',
-      '2': 'Tuesday',
-      '3': 'Wednesday',
-      '4': 'Thursday',
-      '5': 'Friday',
-      '6': 'Saturday'
-    };
-
-    for (let i = 0; i < next3DaysWeather.length; i++) {
+    for (let i = 0; i < next3DaysWeather.length; i += 1) {
       const { main: { temp }, weather } = next3DaysWeather[i];
 
       let dayNumber = dayjs().add(i + 1, 'day').day();
@@ -66,7 +66,8 @@ export class WeatherToday {
         weatherNextDayList,
         dayToLabelMap[dayNumber],
         temp,
-        weather[0].main);
+        weather[0].icon
+      );
     }
 
     weatherTodayInfoList.append(
@@ -95,20 +96,30 @@ export class WeatherToday {
     }, 1000);
   }
 
+  updateForecastData(next3DaysWeather) {
+    for (let i = 0; i < next3DaysWeather.length; i += 1) {
+      const { dt_txt, main: { temp }, weather } = next3DaysWeather[i];
+      const date = new Date(dt_txt);
+      this.weekDay.innerText = dayToLabelMap[date.getDay()];
+      this.temperature.innerText = this.temperatureKtoC(temp);
+      this.image.setAttribute('src', `http://openweathermap.org/img/w/${weather[0].icon}.png`);
+    }
+  }
+
   createDayWeatherItem(container, day, temp, imageCode) {
     const dayRoot = createElement('div', 'day_block');
-    const weekDay = createElement('div', 'text_base', 'day_block--name');
-    const temperature = createElement('div', 'text_base', 'day_block--temp');
-    const image = createElement('img', 'day_block--sign');
+    this.weekDay = createElement('div', 'text_base', 'day_block--name');
+    this.temperature = createElement('div', 'text_base', 'day_block--temp');
+    this.image = createElement('img', 'day_block--sign');
 
-    weekDay.innerText = day;
-    temperature.innerText = this.temperatureKtoC(temp);
-    image.setAttribute('src', `assets/img/${imageCode}.png`);
+    this.weekDay.innerText = day;
+    this.temperature.innerText = this.temperatureKtoC(temp);
+    this.image.setAttribute('src', `http://openweathermap.org/img/w/${imageCode}.png`);
 
     dayRoot.append(
-      weekDay,
-      temperature,
-      image
+      this.weekDay,
+      this.temperature,
+      this.image
     );
 
     container.appendChild(dayRoot);
@@ -126,5 +137,4 @@ export class WeatherToday {
   temperatureKtoC(t) {
     return ((Math.round(t - 273.15) + ''.concat(String.fromCharCode(176))));
   }
-
 }
