@@ -369,6 +369,7 @@ body{
 }
 
 .map{
+  clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
   height: 85%;
   width: auto;
   border-radius: 25px;
