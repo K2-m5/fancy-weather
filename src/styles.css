@@ -369,8 +369,8 @@ body{
 }
 
 .map{
-  clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
-  height: 85%;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 75% 90%, 75% 100%, 65% 90%, 0 90%);
+  height: 500px;
   width: auto;
   border-radius: 25px;
 }
@@ -378,6 +378,7 @@ body{
 .coordinate{
   display: flex;
   justify-content: space-between;
+  margin-top: 10px;
 }
 
 .map_latitude {
@@ -399,6 +400,10 @@ body{
 
   .information-block{
     flex-direction: column
+  }
+
+  .map{
+      height: 400px;
   }
 
   .map-block{
