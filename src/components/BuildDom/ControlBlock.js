@@ -1,4 +1,4 @@
-import { createElement } from '../component/createElement';
+import { createElement } from '../utils/createElement';
 
 export class ControlBlock {
   constructor(rootElement) {
@@ -33,10 +33,6 @@ export class ControlBlock {
     switchSpan.setAttribute('data-on', 'C'.concat(String.fromCharCode(176)));
     switchSpan.setAttribute('data-off', 'F'.concat(String.fromCharCode(176)));
 
-    this.switchUnit.addEventListener('click', () => {
-      this.switchBtnClickHandler();
-    });
-
     this.switchUnit.append(
       this.switchInput,
       switchSpan,
@@ -68,11 +64,15 @@ export class ControlBlock {
     });
   }
 
-  switchBtnClickHandler() {
-    if (this.switchInput.checked) {
-      this.switchInput.removeAttribute('checked');
-    } else {
-      this.switchInput.setAttribute('checked', 'true');
-    }
+  bindClickSwitchBtn(handler, handlerSec) {
+    this.switchUnit.addEventListener('click', () => {
+      if (this.switchInput.checked) {
+        this.switchInput.removeAttribute('checked');
+        handler();
+      } else {
+        this.switchInput.setAttribute('checked', 'true');
+        handlerSec();
+      }
+    });
   }
 }

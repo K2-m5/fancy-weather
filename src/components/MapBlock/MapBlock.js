@@ -1,12 +1,14 @@
-import { createElement } from '../component/createElement';
+import { createElement } from '../utils/createElement';
 import mapboxgl from 'mapbox-gl';
 import { words } from '../const/words';
 import { symbolCoordinate } from '../const/symbol';
 
+import './MapBlock.css';
+
 const { hour, min, sec } = symbolCoordinate;
 const index = (str) => str.indexOf('.');
 
-export class MapBlock {
+export default class MapBlock {
   constructor(mapKey) {
     this.mapboxGl = mapboxgl;
     this.map = null;
@@ -45,7 +47,7 @@ export class MapBlock {
   addMap(lon, lat) {
     this.map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/dark-v10',
+      style: 'mapbox://styles/mapbox/streets-v11',
       center: [lon, lat],
       zoom: 12
     });

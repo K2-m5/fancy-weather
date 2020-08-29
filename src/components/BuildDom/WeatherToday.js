@@ -1,6 +1,9 @@
 /* eslint-disable camelcase */
-import { createElement } from '../component/createElement';
+import { createElement } from '../utils/createElement';
 import * as dayjs from 'dayjs';
+import { symbolCoordinate } from '../const/symbol';
+
+const { hour } = symbolCoordinate;
 
 const dayToLabelMap = {
   0: 'Sunday',
@@ -23,6 +26,8 @@ export class WeatherToday {
     this.weatherTodayInfoListWind = createElement('div', 'text_base', 'weather_today_block--info_list-item');
     this.weatherTodayInfoListHumidity = createElement('div', 'text_base', 'weather_today_block--info_list-item');
     this.weatherTodayImg = createElement('img', 'weather_today_block--sign');
+    this.tempToday = [];
+    this.tempThreeDaysForecast = [];
   }
 
   updateWeatherData(city, tempToday, weather, feels, wind, humidity, weatherImg) {
@@ -45,9 +50,10 @@ export class WeatherToday {
       humidity,
       weatherImgCode
     } = currentWeather;
+    this.tempToday = tempToday;
     const weatherToday = createElement('div', 'weather-today');
     const weatherTodayInfoList = createElement('div', 'weather_today_block--info_list');
-    const weatherNextDayList = createElement('div', 'weather_days_block');
+    this.weatherNextDayList = createElement('div', 'weather_days_block');
 
     this.updateDate();
     this.weatherCity.innerText = city;
@@ -63,11 +69,12 @@ export class WeatherToday {
 
       let dayNumber = dayjs().add(i + 1, 'day').day();
       this.createDayWeatherItem(
-        weatherNextDayList,
+        this.weatherNextDayList,
         dayToLabelMap[dayNumber],
         temp,
         weather[0].icon
       );
+      this.tempThreeDaysForecast.push(temp);
     }
 
     weatherTodayInfoList.append(
@@ -87,7 +94,7 @@ export class WeatherToday {
       this.weatherCity,
       this.weatherDate,
       weatherToday,
-      weatherNextDayList
+      this.weatherNextDayList
     );
 
     rootElement.append(this.weatherBlock);
@@ -135,6 +142,29 @@ export class WeatherToday {
   }
 
   temperatureKtoC(t) {
-    return ((Math.round(t - 273.15) + ''.concat(String.fromCharCode(176))));
+    return ((Math.round(t - 273.15) + '' + hour));
+  }
+
+  temperatureKtoF(t) {
+    return ((Math.round(t * 1.8 - 459.67) + '' + hour));
+  }
+
+  updateTemperature(arr) {
+    const arrNew = document.querySelectorAll('.day_block--temp');
+    for (let i = 0; i < arr.length; i += 1) {
+      arrNew[i].innerText = arr[i]
+    }
+  }
+
+  CtoF() {
+    const newArr = this.tempThreeDaysForecast.map((el) => this.temperatureKtoC(el));
+    this.weatherTodayTemp.innerText = this.temperatureKtoC(this.tempToday);
+    this.updateTemperature(newArr);
+  }
+
+  FtoC() {
+    const newArr = this.tempThreeDaysForecast.map((el) => this.temperatureKtoF(el));
+    this.weatherTodayTemp.innerText = this.temperatureKtoF(this.tempToday);
+    this.updateTemperature(newArr);
   }
 }

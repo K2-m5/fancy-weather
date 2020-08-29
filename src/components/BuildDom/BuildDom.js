@@ -1,8 +1,8 @@
-import { createElement } from '../component/createElement';
+import { createElement } from '../utils/createElement';
 import { WeatherToday } from './WeatherToday';
 import { ControlBlock } from './ControlBlock';
 import { SearchBlock } from './SearchBlock';
-import { MapBlock } from './MapBlock';
+import MapBlock from '../MapBlock/MapBlock';
 import { WeatherFetch } from '../FetchApp/WeatherFetch';
 import { CoordUserFetch } from '../FetchApp/CoordUserFetch';
 import { openWeatherKeys, mapKey } from '../const/const';
@@ -20,6 +20,10 @@ export class BuildDom {
     this.searchBlock = new SearchBlock();
     this.forecastData = [];
     this.bodyRoot = createElement('section', 'information-block');
+
+    this.controlBlock.bindClickImageBtn(this.imageFetch.getImage.bind(this.imageFetch));
+    this.controlBlock.bindClickSwitchBtn(this.weatherTodayApp.FtoC.bind(this.weatherTodayApp),
+      this.weatherTodayApp.CtoF.bind(this.weatherTodayApp));
   }
 
   changeLanguageHandler(lang) {

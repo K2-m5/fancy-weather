@@ -1,4 +1,4 @@
-import { createElement } from '../component/createElement';
+import { createElement } from '../utils/createElement';
 import { words } from '../const/words';
 
 export class SearchBlock {
