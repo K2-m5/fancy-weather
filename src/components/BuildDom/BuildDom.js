@@ -44,7 +44,7 @@ export class BuildDom {
     const n3dw = this.getNext3DaysWeather(dataNextDay.list);
     this.weatherTodayApp.updateForecastData(n3dw);
 
-    this.mapBlock.updateMap(weatherData.coord.lon, weatherData.coord.lat);
+    this.mapBlock.updateMap(String(weatherData.coord.lon), String(weatherData.coord.lat));
   }
 
   createControlBlock() {
@@ -99,7 +99,7 @@ export class BuildDom {
       );
 
       this.rootElement.append(this.bodyRoot);
-      this.mapBlock.addMap(cityData.loc.slice(8, 13), cityData.loc.slice(0, 5));
+      this.mapBlock.addMap(cityData.loc.slice(8, 15), cityData.loc.slice(0, 7));
     });
   }
 

@@ -1,6 +1,10 @@
 import { createElement } from '../component/createElement';
 import mapboxgl from 'mapbox-gl';
 import { words } from '../const/words';
+import { symbolCoordinate } from '../const/symbol';
+
+const { hour, min, sec } = symbolCoordinate;
+const index = (str) => str.indexOf('.');
 
 export class MapBlock {
   constructor(mapKey) {
@@ -45,8 +49,8 @@ export class MapBlock {
       center: [lon, lat],
       zoom: 12
     });
-    this.latitudeValue.innerText = lat;
-    this.longitudeValue.innerText = lon;
+    this.latitudeValue.innerText = `${lat.slice(0, index(lat)) + hour} ${lat.slice(index(lat) + 1, index(lat) + 3) + min} ${lat.slice(index(lat) + 3) + sec}`;
+    this.longitudeValue.innerText = `${lon.slice(0, index(lon)) + hour} ${lon.slice(index(lon) + 1, index(lon) + 3) + min} ${lon.slice(index(lon) + 3) + sec}`;
     return (this.map);
   }
 
@@ -57,8 +61,8 @@ export class MapBlock {
       center: [lon, lat],
       zoom: 12
     });
-    this.latitudeValue.innerText = lat;
-    this.longitudeValue.innerText = lon;
+    this.latitudeValue.innerText = `${lat.slice(0, index(lat)) + hour} ${lat.slice(index(lat) + 1, index(lat) + 3) + min} ${lat.slice(index(lat) + 3) + sec}`;
+    this.longitudeValue.innerText = `${lon.slice(0, index(lon)) + hour} ${lon.slice(index(lon) + 1, index(lon) + 3) + min} ${lon.slice(index(lon) + 3) + sec}`;
   }
 
   renderDataLanguageMap(lang) {
