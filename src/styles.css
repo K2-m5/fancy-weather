@@ -5,11 +5,12 @@
 }
 
 body{
+  margin: 0 auto;
+  padding: 20px 40px;
   position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 2%;
 }
 
 /* Control block */

@@ -6,10 +6,12 @@ import { MapBlock } from './MapBlock';
 import { WeatherFetch } from '../FetchApp/WeatherFetch';
 import { CoordUserFetch } from '../FetchApp/CoordUserFetch';
 import { openWeatherKeys, mapKey } from '../const/const';
+import ImageFetch from '../FetchApp/ImageFetch';
 
 export class BuildDom {
   constructor(rootElement) {
     this.rootElement = rootElement;
+    this.imageFetch = new ImageFetch();
     this.weatherTodayApp = new WeatherToday();
     this.mapBlock = new MapBlock(mapKey);
     this.controlBlock = new ControlBlock(rootElement);
@@ -115,6 +117,7 @@ export class BuildDom {
   }
 
   buildDom() {
+    this.imageFetch.getImage();
     this.createControlBlock();
     this.createWeatherBlock();
   }

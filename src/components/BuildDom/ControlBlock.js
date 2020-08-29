@@ -7,11 +7,11 @@ export class ControlBlock {
     this.switchUnit = createElement('label', 'switch-label');
     this.switchInput = createElement('input', 'switch-input');
     this.changeLanguage = createElement('select', 'drop-list-language');
+    this.changePicture = createElement('button', 'button-base', 'change-picture');
   }
 
   createControlBlock() {
     const buttonPanel = createElement('div', 'wrapper', 'button-panel');
-    const changePicture = createElement('button', 'button-base', 'change-picture');
     this.changeLanguage = createElement('select', 'drop-list-language');
     const languageEN = createElement('option', 'item-language-en');
     const languageRU = createElement('option', 'item-language-ru');
@@ -54,12 +54,18 @@ export class ControlBlock {
     );
 
     buttonPanel.append(
-      changePicture,
+      this.changePicture,
       this.changeLanguage,
       this.switchUnitTemp
     );
 
     return buttonPanel;
+  }
+
+  bindClickImageBtn(handler) {
+    this.changePicture.addEventListener('click', () => {
+      handler();
+    });
   }
 
   switchBtnClickHandler() {
