@@ -8,8 +8,12 @@ export class CoordUserFetch {
 
   async getPlaceByIp() {
     const url = this.apiKeys.URL + this.apiKeys.TOKEN;
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return error;
+    }
   }
 }

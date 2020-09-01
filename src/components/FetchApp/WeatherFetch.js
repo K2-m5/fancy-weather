@@ -25,7 +25,7 @@ export class WeatherFetch {
 
   async getForecastByCoords(lon, lat) {
     const url = this.apiKeys.URL + this.apiKeys.FORECAST
-    + this.apiKeys.LAT + lat + this.apiKeys.LONG + lon + this.apiKeys.KEY;
+    + this.apiKeys.LAT + lat + this.apiKeys.LONG + lon + this.apiKeys.UNITS + this.apiKeys.KEY;
 
     const response = await fetch(url);
     const data = await response.json();
@@ -34,7 +34,7 @@ export class WeatherFetch {
 
   async getCurrentWeatherByCoords(lon, lat) {
     const url = this.apiKeys.URL + this.apiKeys.WEATHER
-    + this.apiKeys.LAT + lat + this.apiKeys.LONG + lon + this.apiKeys.KEY;
+    + this.apiKeys.LAT + lat + this.apiKeys.LONG + lon + this.apiKeys.UNITS + this.apiKeys.KEY;
 
     const response = await fetch(url);
     const data = await response.json();
