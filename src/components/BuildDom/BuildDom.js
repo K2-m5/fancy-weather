@@ -33,6 +33,7 @@ export class BuildDom {
   }
 
   changeLanguageHandler(lang) {
+    console.log('hi');
     this.mapBlock.renderDataLanguageMap(lang);
     this.searchPanel.renderDataLanguage(lang);
   }
@@ -64,9 +65,20 @@ export class BuildDom {
       this.searchPanel.createSearchBlock()
     );
 
-    this.controlBlock.changeLanguage.addEventListener('change', (event) => {
-      this.changeLanguageHandler(event.target.value);
-    });
+    const config = {
+      attributes: true,
+      childList: true,
+      subtree: true,
+      attributeOldValue: false
+    };
+
+    const observer = new MutationObserver((mutationRecords) => this.changeLanguageHandler(mutationRecords));
+
+    observer.observe(this.controlBlock.changeLanguage, config);
+
+    // this.controlBlock.changeLanguage.addEventListener('change', (event) => {
+    //   this.changeLanguageHandler(event.target.value);
+    // });
 
     this.searchPanel.formSearchRoot.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -77,15 +89,11 @@ export class BuildDom {
     this.rootElement.append(headerRoot);
   }
 
-  getUserPlace() {
-    const getPlace = (async () => {
-      this.userPlace = await this.coordUserFetch.getPlaceByIp();
-    });
-    return getPlace();
-  }
-
-  getWeatherData(city) {
+  getStartData() {
     const getData = (async () => {
+      this.userPlace = await this.coordUserFetch.getPlaceByIp();
+      const { city } = this.userPlace;
+      await this.imageFetch.getImage(city);
       this.weatherDataToDay = await this.weatherFetch.getCurrentWeatherByCity(city);
       this.weatherDataForecast = await this.weatherFetch.getForecastByCity(city);
     });
@@ -94,13 +102,9 @@ export class BuildDom {
 
   createWeatherBlock() {
     const map = this.mapBlock.createMapBlock();
-
     const startData = (async () => {
-      await this.getUserPlace();
-      const { city } = this.userPlace;
-      await this.imageFetch.getImage(city);
-      await this.getWeatherData(city);
-
+      await this.getStartData();
+      const { region } = this.userPlace;
       const {
         main: {
           feels_like,
@@ -121,7 +125,7 @@ export class BuildDom {
 
       this.weatherTodayApp.createWeatherTodayBlock(
         this.bodyRoot, {
-          city: city,
+          city: region,
           tempToday: temp,
           weather: main,
           feels: feels_like,

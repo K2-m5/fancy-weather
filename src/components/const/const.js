@@ -7,6 +7,6 @@ export const openWeatherKeys = {
   WEATHER: 'weather?',
   LAT: 'lat=',
   LONG: '&lon=',
-  LANG: '&lang=',
+  LANG: '&lang=en',
   UNITS: '&units'
 };
