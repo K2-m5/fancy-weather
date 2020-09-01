@@ -220,40 +220,6 @@ body{
   box-shadow: -1px 1px 5px rgba(0,0,0,.2);
 }
 
-/* Search panel */
-
-.search-panel{
-  width: 39%;
-}
-
-.search-root{
-  display: flex;
-  width: 100%;
-}
-
-.input_base{
-  flex: 1 1;
-  width: 70%;
-  height: 44px;
-  font-family: Arial,Helvetica,sans-serif;
-  color: #fff;
-  background: rgba(76,82,85,.4);
-  border: 1px solid #fff;
-  border-right-width: 0;
-  border-radius: 5px 0 0 5px;
-  outline: none;
-}
-
-.search-btn{
-  width: 29%;
-  height: 44px;
-  font-weight: 700;
-  background: grey;
-  border: 1px solid #fff;
-  border-left-width: 0;
-  border-radius: 0 5px 5px 0;
-}
-
 /* Weather block */
 
 

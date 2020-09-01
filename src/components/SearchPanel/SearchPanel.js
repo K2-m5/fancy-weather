@@ -1,7 +1,9 @@
 import { createElement } from '../utils/createElement';
 import { words } from '../const/words';
 
-export class SearchBlock {
+import './SearchPanel.css';
+
+export class SearchPanel {
   constructor() {
     this.searchString = '';
     this.buttonSearch = createElement('button', 'button-base', 'search-btn');

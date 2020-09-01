@@ -1,7 +1,8 @@
+/* eslint-disable camelcase */
 import { createElement } from '../utils/createElement';
 import { WeatherToday } from './WeatherToday';
 import { ControlBlock } from './ControlBlock';
-import { SearchBlock } from './SearchBlock';
+import { SearchPanel } from '../SearchPanel/SearchPanel';
 import MapBlock from '../MapBlock/MapBlock';
 import { WeatherFetch } from '../FetchApp/WeatherFetch';
 import { CoordUserFetch } from '../FetchApp/CoordUserFetch';
@@ -17,7 +18,7 @@ export class BuildDom {
     this.controlBlock = new ControlBlock(rootElement);
     this.weatherFetch = new WeatherFetch(openWeatherKeys);
     this.coordUserFetch = new CoordUserFetch();
-    this.searchBlock = new SearchBlock();
+    this.searchPanel = new SearchPanel();
 
     this.userPlace = {};
     this.weatherDataToDay = {};
@@ -33,7 +34,7 @@ export class BuildDom {
 
   changeLanguageHandler(lang) {
     this.mapBlock.renderDataLanguageMap(lang);
-    this.searchBlock.renderDataLanguage(lang);
+    this.searchPanel.renderDataLanguage(lang);
   }
 
   async searchHandler(searchString) {
@@ -60,17 +61,17 @@ export class BuildDom {
     const headerRoot = createElement('div', 'controls_block');
     headerRoot.append(
       this.controlBlock.createControlBlock(),
-      this.searchBlock.createSearchBlock()
+      this.searchPanel.createSearchBlock()
     );
 
     this.controlBlock.changeLanguage.addEventListener('change', (event) => {
       this.changeLanguageHandler(event.target.value);
     });
 
-    this.searchBlock.formSearchRoot.addEventListener('submit', (e) => {
+    this.searchPanel.formSearchRoot.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      this.searchHandler(this.searchBlock.inputSearch.value);
+      this.searchHandler(this.searchPanel.inputSearch.value);
     });
 
     this.rootElement.append(headerRoot);
