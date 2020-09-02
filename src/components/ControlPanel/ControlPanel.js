@@ -1,9 +1,11 @@
 import { createElement } from '../utils/createElement';
 import { symbolCoordinate } from '../const/symbol';
 
+import './ControlPanel.css';
+
 const { hour } = symbolCoordinate;
 
-export class ControlBlock {
+export class ControlPanel {
   constructor(rootElement) {
     this.rootElement = rootElement;
     this.switchUnitTemp = createElement('div', 'switch-temp');
@@ -55,13 +57,13 @@ export class ControlBlock {
     this.switchInput.setAttribute('type', 'checkbox');
 
 
-    if (localStorage.getItem('temperature') === ('C' + hour)) {
+    if (localStorage.getItem('temperature') === ('C')) {
       this.switchInput.setAttribute('checked', 'false');
     } else {
       this.switchInput.removeAttribute('checked');
     }
-    this.switchSpan.setAttribute('data-on', 'C' + hour);
-    this.switchSpan.setAttribute('data-off', 'F' + hour);
+    this.switchSpan.setAttribute('data-on', 'C');
+    this.switchSpan.setAttribute('data-off', 'F');
 
     this.switchUnit.append(
       this.switchInput,
