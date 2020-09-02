@@ -14,7 +14,7 @@ export class SearchPanel {
   createSearchBlock() {
     const searchPanel = createElement('div', 'wrapper', 'search-panel');
     this.formSearchRoot.setAttribute('name', 'search');
-
+    this.inputSearch.setAttribute('type', 'text');
     this.buttonSearch.id = 'buttonSearch';
     this.buttonSearch.innerText = 'Search';
 
