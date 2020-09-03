@@ -1,13 +1,14 @@
 /* eslint-disable camelcase */
 import { createElement } from '../utils/createElement';
-import { WeatherToday } from './WeatherToday';
-import { ControlBlock } from './ControlBlock';
-import { SearchPanel } from '../SearchPanel/SearchPanel';
+import WeatherToday from '../WeatherPanel/WeatherPanel';
+import { ControlPanel } from '../ControlPanel/ControlPanel';
+import SearchPanel from '../SearchPanel/SearchPanel';
 import MapBlock from '../MapBlock/MapBlock';
-import { WeatherFetch } from '../FetchApp/WeatherFetch';
-import { CoordUserFetch } from '../FetchApp/CoordUserFetch';
-import { openWeatherKeys, mapKey } from '../const/const';
+import WeatherApi from '../FetchApp/WeatherFetch';
+import UserPlaceApi from '../FetchApp/UserPlaceApi';
+import { mapKey } from '../const/const';
 import ImageFetch from '../FetchApp/ImageFetch';
+import ApiService from '../FetchApp/ApiService';
 
 export class BuildDom {
   constructor(rootElement) {
@@ -15,10 +16,11 @@ export class BuildDom {
     this.imageFetch = new ImageFetch();
     this.weatherTodayApp = new WeatherToday();
     this.mapBlock = new MapBlock(mapKey);
-    this.controlBlock = new ControlBlock(rootElement);
-    this.weatherFetch = new WeatherFetch(openWeatherKeys);
-    this.coordUserFetch = new CoordUserFetch();
+    this.controlPanel = new ControlPanel(rootElement);
+    this.weatherFetch = new WeatherApi();
+    this.coordUserFetch = new UserPlaceApi();
     this.searchPanel = new SearchPanel();
+    this.api = new ApiService();
 
     this.userPlace = {};
     this.weatherDataToDay = {};
@@ -27,13 +29,12 @@ export class BuildDom {
     this.forecastData = [];
     this.bodyRoot = createElement('section', 'information-block');
 
-    this.controlBlock.bindClickImageBtn(this.imageFetch.getImage.bind(this.imageFetch));
-    this.controlBlock.bindClickSwitchBtn(this.weatherTodayApp.FtoC.bind(this.weatherTodayApp),
+    this.controlPanel.bindClickImageBtn(this.imageFetch.getImage.bind(this.imageFetch));
+    this.controlPanel.bindClickSwitchBtn(this.weatherTodayApp.FtoC.bind(this.weatherTodayApp),
       this.weatherTodayApp.CtoF.bind(this.weatherTodayApp));
   }
 
   changeLanguageHandler(lang) {
-    console.log('hi');
     this.mapBlock.renderDataLanguageMap(lang);
     this.searchPanel.renderDataLanguage(lang);
   }
@@ -61,28 +62,12 @@ export class BuildDom {
   createControlBlock() {
     const headerRoot = createElement('div', 'controls_block');
     headerRoot.append(
-      this.controlBlock.createControlBlock(),
+      this.controlPanel.createControlBlock(),
       this.searchPanel.createSearchBlock()
     );
 
-    const config = {
-      attributes: true,
-      childList: true,
-      subtree: true,
-      attributeOldValue: false
-    };
-
-    const observer = new MutationObserver((mutationRecords) => this.changeLanguageHandler(mutationRecords));
-
-    observer.observe(this.controlBlock.changeLanguage, config);
-
-    // this.controlBlock.changeLanguage.addEventListener('change', (event) => {
-    //   this.changeLanguageHandler(event.target.value);
-    // });
-
     this.searchPanel.formSearchRoot.addEventListener('submit', (e) => {
       e.preventDefault();
-
       this.searchHandler(this.searchPanel.inputSearch.value);
     });
 
@@ -93,7 +78,6 @@ export class BuildDom {
     const getData = (async () => {
       this.userPlace = await this.coordUserFetch.getPlaceByIp();
       const { city } = this.userPlace;
-      await this.imageFetch.getImage(city);
       this.weatherDataToDay = await this.weatherFetch.getCurrentWeatherByCity(city);
       this.weatherDataForecast = await this.weatherFetch.getForecastByCity(city);
     });
@@ -103,6 +87,7 @@ export class BuildDom {
   createWeatherBlock() {
     const map = this.mapBlock.createMapBlock();
     const startData = (async () => {
+      await this.api.getData();
       await this.getStartData();
       const { region } = this.userPlace;
       const {

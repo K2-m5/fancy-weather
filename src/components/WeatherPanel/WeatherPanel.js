@@ -3,6 +3,8 @@ import { createElement } from '../utils/createElement';
 import * as dayjs from 'dayjs';
 import { changeKtoC, changeKtoF, updateTemperature } from '../utils//changeTempDimension';
 
+import './WeatherPanel.css';
+
 const dayToLabelMap = {
   0: 'Sunday',
   1: 'Monday',
@@ -13,7 +15,7 @@ const dayToLabelMap = {
   6: 'Saturday'
 };
 
-export class WeatherToday {
+export default class WeatherPanel {
   constructor() {
     this.weatherBlock = createElement('div', 'weather_block');
     this.weatherCity = createElement('div', 'weather_today_block--city_country', 'text_base');
