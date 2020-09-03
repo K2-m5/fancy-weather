@@ -3,7 +3,7 @@ import { words } from '../const/words';
 
 import './SearchPanel.css';
 
-export class SearchPanel {
+export default class SearchPanel {
   constructor() {
     this.searchString = '';
     this.buttonSearch = createElement('button', 'button-base', 'search-btn');
