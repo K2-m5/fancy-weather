@@ -9,6 +9,7 @@ import UserPlaceApi from '../FetchApp/UserPlaceApi';
 import { mapKey } from '../const/const';
 import ImageFetch from '../FetchApp/ImageFetch';
 import ApiService from '../FetchApp/ApiService';
+import data from '../FetchApp/data';
 
 export class BuildDom {
   constructor(rootElement) {
@@ -21,6 +22,7 @@ export class BuildDom {
     this.coordUserFetch = new UserPlaceApi();
     this.searchPanel = new SearchPanel();
     this.api = new ApiService();
+    this.data = data;
 
     this.userPlace = {};
     this.weatherDataToDay = {};
@@ -53,7 +55,7 @@ export class BuildDom {
       weatherData.weather[0].icon
     );
 
-    const n3dw = this.getNext3DaysWeather(dataNextDay.list);
+    const n3dw = this.api.getForecast(dataNextDay.list);
     this.weatherTodayApp.updateForecastData(n3dw);
 
     this.mapBlock.updateMap(String(weatherData.coord.lon), String(weatherData.coord.lat));
@@ -74,72 +76,28 @@ export class BuildDom {
     this.rootElement.append(headerRoot);
   }
 
-  getStartData() {
-    const getData = (async () => {
-      this.userPlace = await this.coordUserFetch.getPlaceByIp();
-      const { city } = this.userPlace;
-      this.weatherDataToDay = await this.weatherFetch.getCurrentWeatherByCity(city);
-      this.weatherDataForecast = await this.weatherFetch.getForecastByCity(city);
-    });
-    return getData();
-  }
-
   createWeatherBlock() {
     const map = this.mapBlock.createMapBlock();
     const startData = (async () => {
       await this.api.getData();
-      await this.getStartData();
-      const { region } = this.userPlace;
-      const {
-        main: {
-          feels_like,
-          temp,
-          humidity
-        },
-        wind: {
-          speed
-        },
-        weather:
-        [{
-          main,
-          icon
-        }]
-      } = this.weatherDataToDay;
-      const { list } = this.weatherDataForecast;
-      const n3dw = this.getNext3DaysWeather(list);
-
       this.weatherTodayApp.createWeatherTodayBlock(
         this.bodyRoot, {
-          city: region,
-          tempToday: temp,
-          weather: main,
-          feels: feels_like,
-          wind: speed,
-          humidity: humidity,
-          weatherImgCode: icon
+          city: this.data.weather.city,
+          tempToday: this.data.weather.temp,
+          weather: this.data.weather.description,
+          feels: this.data.weather.feelsLike,
+          wind: this.data.weather.wind,
+          humidity: this.data.weather.humidity,
+          weatherImgCode: this.data.weather.icon
         },
-        n3dw
+        this.data.forecast
       );
 
       this.bodyRoot.append(map);
-
       this.rootElement.append(this.bodyRoot);
-      this.mapBlock.addMap(this.userPlace.loc.slice(8, 15), this.userPlace.loc.slice(0, 7));
+      this.mapBlock.addMap(this.data.coordinate.lng, this.data.coordinate.ltd);
     });
     startData();
-  }
-
-  getNext3DaysWeather(weatherList) {
-    const currentDate = new Date().toDateString();
-    const newDayIndex = weatherList.findIndex(
-      (listItem) => currentDate !== new Date(listItem.dt_txt).toDateString()
-    );
-    const todayExcluded = weatherList.slice(newDayIndex);
-    this.forecastData = [];
-    for (let i = 4; i < todayExcluded.length; i += 8) {
-      this.forecastData.push(todayExcluded[i]);
-    }
-    return this.forecastData.slice(0, 3);
   }
 
   buildDom() {

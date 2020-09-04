@@ -28,14 +28,12 @@ export default class ApiService {
 
   async getDataPlace() {
     const dataPlace = await this.userPlaceApi.getPlaceByIp();
-    console.log(dataPlace);
     this.data.city = dataPlace.city;
     this.data.region = dataPlace.region;
     this.data.country = dataPlace.country;
     this.data.timezone = dataPlace.timezone;
     this.data.coordinate.ltd = dataPlace.loc.slice(0, dataPlace.loc.indexOf(','));
     this.data.coordinate.lng = dataPlace.loc.slice(dataPlace.loc.indexOf(',') + 1);
-    console.log(this.data);
   }
 
   getForecast(dataForecast) {
@@ -60,19 +58,25 @@ export default class ApiService {
     } = this.data;
     const dataWeather = await this.weatherApi.getDataWeather(lng, ltd);
     const dataForecast = await this.weatherApi.getDataForecast(lng, ltd);
-    this.data.weather = dataWeather;
-    // this.data.weather.feelLikes = dataWeather.main.feels_like;
-    // this.data.weather.temp = dataWeather.main.temp;
-    // this.data.weather.humidity = dataWeather.main.humidity;
-    // this.data.weather.description = dataWeather.weather[0].description;
-    // this.data.weather.icon = dataWeather.weather[0].icon;
-    // this.data.weather.wind = dataWeather.wind.speed;
+    this.data.weather.feelLikes = dataWeather.main.feels_like;
+    this.data.weather.temp = dataWeather.main.temp;
+    this.data.weather.humidity = dataWeather.main.humidity;
+    this.data.weather.description = dataWeather.weather[0].description;
+    this.data.weather.icon = dataWeather.weather[0].icon;
+    this.data.weather.wind = dataWeather.wind.speed;
     this.data.forecast = this.getForecast(dataForecast.list);
+  }
+
+  async getCoordinateByPlace() {
+    const crd = await this.placeCrdApi.getCoordinateByPlace();
+    console.log(crd);
   }
 
   async getData() {
     await this.getDataPlace();
     this.getImage();
     await this.getDataWeather();
+
+    console.log(this.data);
   }
 }
