@@ -49,15 +49,7 @@ export default class ApiService {
     return forecastData.slice(0, 3);
   }
 
-  async getDataWeather() {
-    const {
-      coordinate: {
-        lng,
-        ltd
-      }
-    } = this.data;
-    const dataWeather = await this.weatherApi.getDataWeather(lng, ltd);
-    const dataForecast = await this.weatherApi.getDataForecast(lng, ltd);
+  provideDataWeather(dataWeather, dataForecast) {
     this.data.weather.feelLikes = dataWeather.main.feels_like;
     this.data.weather.temp = dataWeather.main.temp;
     this.data.weather.humidity = dataWeather.main.humidity;
@@ -67,8 +59,30 @@ export default class ApiService {
     this.data.forecast = this.getForecast(dataForecast.list);
   }
 
-  async getCoordinateByPlace() {
-    const crd = await this.placeCrdApi.getCoordinateByPlace();
+  async getDataWeather() {
+    const {
+      coordinate: {
+        lng,
+        ltd
+      }
+    } = this.data;
+    const dataWeather = await this.weatherApi.getDataWeather(lng, ltd);
+    const dataForecast = await this.weatherApi.getDataForecast(lng, ltd);
+    this.provideDataWeather(dataWeather, dataForecast);
+  }
+
+  async getDataUserRequest(city) {
+    await this.getCoordinateByPlace(city);
+    const dataWeather = await this.weatherApi.getDataWeatherByCity(city);
+    const dataForecast = await this.weatherApi.getDataForecastByCity(city);
+    this.provideDataWeather(dataWeather, dataForecast);
+    console.log(this.data);
+  }
+
+  async getCoordinateByPlace(city) {
+    const crd = await this.placeCrdApi.getCoordinateByPlace(city);
+    this.data.coordinate.ltd = String(crd.results[0].geometry.lat);
+    this.data.coordinate.lng = String(crd.results[0].geometry.lng);
     console.log(crd);
   }
 
@@ -76,7 +90,6 @@ export default class ApiService {
     await this.getDataPlace();
     this.getImage();
     await this.getDataWeather();
-
     console.log(this.data);
   }
 }

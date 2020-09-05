@@ -42,23 +42,19 @@ export class BuildDom {
   }
 
   async searchHandler(searchString) {
-    const weatherData = await this.weatherFetch.getCurrentWeatherByCity(searchString);
-    const dataNextDay = await this.weatherFetch.getForecastByCity(searchString);
+    await this.api.getDataUserRequest(searchString);
 
     this.weatherTodayApp.updateWeatherData(
-      weatherData.name,
-      weatherData.main.temp,
-      weatherData.weather[0].main,
-      weatherData.main.feels_like,
-      weatherData.wind.speed,
-      weatherData.main.humidity,
-      weatherData.weather[0].icon
+      this.data.city,
+      this.data.weather.temp,
+      this.data.weather.description,
+      this.data.weather.feelsLike,
+      this.data.weather.wind,
+      this.data.weather.humidity,
+      this.data.weather.icon
     );
-
-    const n3dw = this.api.getForecast(dataNextDay.list);
-    this.weatherTodayApp.updateForecastData(n3dw);
-
-    this.mapBlock.updateMap(String(weatherData.coord.lon), String(weatherData.coord.lat));
+    this.weatherTodayApp.updateForecastData(this.data.forecast);
+    this.mapBlock.updateMap(this.data.coordinate.lng, this.data.coordinate.ltd);
   }
 
   createControlBlock() {
@@ -82,7 +78,7 @@ export class BuildDom {
       await this.api.getData();
       this.weatherTodayApp.createWeatherTodayBlock(
         this.bodyRoot, {
-          city: this.data.weather.city,
+          city: this.data.city,
           tempToday: this.data.weather.temp,
           weather: this.data.weather.description,
           feels: this.data.weather.feelsLike,
