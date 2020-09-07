@@ -30,6 +30,13 @@ export default class SearchPanel {
     return searchPanel;
   }
 
+  bindClickFormSearch(handler) {
+    this.formSearchRoot.addEventListener('submit', (e) => {
+      e.preventDefault();
+      handler(this.inputSearch.value);
+    });
+  }
+
   renderDataLanguage(lang) {
     let buttonSearchText = words.find(item => item.language === lang);
     this.buttonSearch.innerText = buttonSearchText.searchElements;

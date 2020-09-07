@@ -16,27 +16,6 @@ const data = {
     wind: ''
   },
   forecast: [
-    // {
-    //   feelLikes: '',
-    //   temp: '',
-    //   description: '',
-    //   icon: '',
-    //   wind: ''
-    // },
-    // {
-    //   feelLikes: '',
-    //   temp: '',
-    //   description: '',
-    //   icon: '',
-    //   wind: ''
-    // },
-    // {
-    //   feelLikes: '',
-    //   temp: '',
-    //   description: '',
-    //   icon: '',
-    //   wind: ''
-    // }
   ]
 
 };
