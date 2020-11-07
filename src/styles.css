@@ -1,18 +1,27 @@
-*, :after, :before {
+*,
+:after,
+:before {
   box-sizing: inherit;
   margin: 0;
   padding: 0;
 }
 
-body{
+body {
   margin: 0 auto;
-  padding: 20px 40px;
-  position: relative;
+  padding: 20px 5%;
+}
+
+.root {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
 
-.root {
-  margin: 0 auto;
+.wrapper {
+  display: flex;
+  flex-grow: 1;
+  margin: 5px;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
 }

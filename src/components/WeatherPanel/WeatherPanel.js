@@ -17,7 +17,7 @@ const dayToLabelMap = {
 
 export default class WeatherPanel {
   constructor() {
-    this.weatherBlock = createElement('div', 'weather_block');
+    this.weatherBlock = createElement('div', 'wrapper', 'weather_block');
     this.weatherCity = createElement('div', 'weather_today_block--city_country', 'text_base');
     this.weatherDate = createElement('div', 'text_base', 'weather_today_block--date_time');
     this.weatherTodayTemp = createElement('div', 'text_base', 'weather_today_block--temp');

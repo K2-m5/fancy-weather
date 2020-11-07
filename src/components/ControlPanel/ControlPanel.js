@@ -12,7 +12,11 @@ export class ControlPanel {
     this.switchUnit = createElement('label', 'switch-label');
     this.switchInput = createElement('input', 'switch-input');
     this.changeLanguage = createElement('select', 'drop-list-language');
-    this.changePicture = createElement('button', 'button-base', 'change-picture');
+    this.changePicture = createElement(
+      'button',
+      'button-base',
+      'change-picture'
+    );
     this.language = '';
     this.temperature = '';
   }
@@ -45,6 +49,9 @@ export class ControlPanel {
     languageBY.setAttribute('value', 'by');
     languageBY.innerText = 'BY';
 
+    // const iconRepeat = createElement('i', 'fas', 'fa-redo');
+    // this.changePicture.append(iconRepeat);
+
     this.changeLanguage.addEventListener('click', (event) => {
       this.language = event.target.value;
       localStorage.setItem('language', this.language);
@@ -56,8 +63,7 @@ export class ControlPanel {
     this.switchUnit.setAttribute('for', 'switch-input');
     this.switchInput.setAttribute('type', 'checkbox');
 
-
-    if (localStorage.getItem('temperature') === ('C')) {
+    if (localStorage.getItem('temperature') === 'C') {
       this.switchInput.setAttribute('checked', 'false');
     } else {
       this.switchInput.removeAttribute('checked');
@@ -65,19 +71,11 @@ export class ControlPanel {
     this.switchSpan.setAttribute('data-on', 'C');
     this.switchSpan.setAttribute('data-off', 'F');
 
-    this.switchUnit.append(
-      this.switchInput,
-      this.switchSpan,
-      switchSpanHandle
-    );
+    this.switchUnit.append(this.switchInput, this.switchSpan, switchSpanHandle);
 
     this.switchUnitTemp.append(this.switchUnit);
 
-    this.changeLanguage.append(
-      languageEN,
-      languageRU,
-      languageBY
-    );
+    this.changeLanguage.append(languageEN, languageRU, languageBY);
 
     this.switchUnitInput = this.temperature;
     this.changeLanguage.value = this.language;

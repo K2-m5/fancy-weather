@@ -1,7 +1,9 @@
 /* Search panel */
 
-.search-panel {
-  width: 39%;
+.wrapper.search-panel {
+  flex-grow: 1;
+  flex-basis: 35%;
+  justify-content: flex-start;
 }
 
 .search-root {
@@ -9,18 +11,17 @@
   width: 100%;
 }
 
-input[type=text] {
+input[type='text'] {
   padding-left: 5px;
   font-size: 20px;
 }
 
 .input_base {
-  flex: 1 1;
   width: 70%;
   height: 44px;
-  font-family: Arial,Helvetica,sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   color: #fff;
-  background: rgba(76,82,85,.4);
+  background: rgba(76, 82, 85, 0.4);
   border: 1px solid #fff;
   border-right-width: 0;
   border-radius: 5px 0 0 5px;

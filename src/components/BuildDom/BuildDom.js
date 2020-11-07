@@ -20,13 +20,15 @@ export class BuildDom {
     this.api = new ApiService();
     this.data = data;
 
-    this.bodyRoot = createElement('section', 'information-block');
+    this.bodyRoot = createElement('div', 'information-block');
     this.root = document.getElementById('root');
     this.louderContainer = document.getElementById('louder');
 
-    this.controlPanel.bindClickImageBtn(this.api.getImage.bind(this));
-    this.controlPanel.bindClickSwitchBtn(this.weatherTodayApp.FtoC.bind(this.weatherTodayApp),
-      this.weatherTodayApp.CtoF.bind(this.weatherTodayApp));
+    this.controlPanel.bindClickImageBtn(this.api.getImage.bind(this.api));
+    this.controlPanel.bindClickSwitchBtn(
+      this.weatherTodayApp.FtoC.bind(this.weatherTodayApp),
+      this.weatherTodayApp.CtoF.bind(this.weatherTodayApp)
+    );
     this.searchPanel.bindClickFormSearch(this.searchHandler.bind(this));
   }
 
@@ -68,7 +70,10 @@ export class BuildDom {
         this.data.weather.icon
       );
       this.weatherTodayApp.updateForecastData(this.data.forecast);
-      this.mapBlock.updateMap(this.data.coordinate.lng, this.data.coordinate.ltd);
+      this.mapBlock.updateMap(
+        this.data.coordinate.lng,
+        this.data.coordinate.ltd
+      );
       this.showApp();
     }, 3000);
   }
@@ -90,28 +95,32 @@ export class BuildDom {
 
   createWeatherBlock() {
     const map = this.mapBlock.createMapBlock();
-    const startData = (async () => {
+    const startData = async () => {
       await this.api.getData();
       setTimeout(() => {
         this.hideLouder();
         this.createControlBlock();
         this.weatherTodayApp.createWeatherTodayBlock(
-          this.bodyRoot, {
+          this.bodyRoot,
+          {
             city: this.data.city,
             tempToday: this.data.weather.temp,
             weather: this.data.weather.description,
             feels: this.data.weather.feelsLike,
             wind: this.data.weather.wind,
             humidity: this.data.weather.humidity,
-            weatherImgCode: this.data.weather.icon
+            weatherImgCode: this.data.weather.icon,
           },
           this.data.forecast
         );
         this.bodyRoot.append(map);
         this.rootElement.append(this.bodyRoot);
-        this.mapBlock.addMap(this.data.coordinate.lng, this.data.coordinate.ltd);
+        this.mapBlock.addMap(
+          this.data.coordinate.lng,
+          this.data.coordinate.ltd
+        );
       }, 3000);
-    });
+    };
     startData();
   }
 

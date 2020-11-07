@@ -1,67 +1,64 @@
 /* Weather block */
 
-
-.information-block{
+.information-block {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
 }
 
-.text_base{
+.text_base {
   font-weight: 700;
   font-size: 21px;
-  font-family: Arial,Helvetica,sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   color: #fff;
   text-transform: uppercase;
 }
 
-.weather_block{
-  display: flex;
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 0%;
+.wrapper.weather_block {
+  flex-basis: 40%;
   flex-direction: column;
-  height: 100%;
-  width: 100%;
-  
+  justify-content: flex-start;
+  margin: 5px;
 }
 
-.weather_today_block--city_country, .weather_today_block--date_time {
+.weather_today_block--city_country,
+.weather_today_block--date_time {
   margin: 5px;
   padding: 20px;
   border-radius: 5px;
-  background-color: rgba(0,0,0,.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-.weather_today_block--date_time{
+.weather_today_block--date_time {
   font-size: 1.15em;
   text-transform: capitalize;
 }
 
-.weather-today{
+.weather-today {
   display: grid;
   align-items: center;
   grid-template-areas:
-      "temp sign"
-      "temp prop";
+    'temp sign'
+    'temp prop';
   grid-template-columns: 2fr 1fr;
   margin: 5px;
   padding: 20px;
   border-radius: 5px;
-  background-color: rgba(0,0,0,.5);
+  background-color: rgba(0, 0, 0, 0.5);
   justify-items: center;
 }
 
-.weather_days_block{
+.weather_days_block {
   display: flex;
   justify-content: space-around;
   margin: 5px;
   padding: 20px;
   border-radius: 5px;
-  background-color: rgba(0,0,0,.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-.weather_today_block--sign{
+.weather_today_block--sign {
   width: 80%;
   grid-area: sign;
 }
@@ -78,26 +75,25 @@
   justify-self: left;
 }
 
-.weather_today_block--info_list-item{
+.weather_today_block--info_list-item {
   padding: 15px 0 0 15px;
   font-size: 1em;
 }
 
-.day_block{
+.day_block {
   display: flex;
   flex-wrap: wrap;
   width: 33%;
 }
 
-.day_block--name{
+.day_block--name {
   align-self: center;
   text-align: center;
   width: 100%;
   font-size: 1em;
 }
 
-.day_block--temp{
-
+.day_block--temp {
   padding: 15px 15px 0 15px;
   font-size: 2em;
 }
