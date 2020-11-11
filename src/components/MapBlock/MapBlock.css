@@ -61,5 +61,10 @@
 
   .information-block {
     flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .wrapper-map-block {
+    height: 600px;
   }
 }
