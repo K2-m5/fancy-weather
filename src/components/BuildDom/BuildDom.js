@@ -8,8 +8,6 @@ import { mapKey } from '../const/const';
 import ApiService from '../FetchApp/ApiService';
 import data from '../FetchApp/data';
 
-import './buildDom.css';
-
 export class BuildDom {
   constructor(rootElement) {
     this.rootElement = rootElement;

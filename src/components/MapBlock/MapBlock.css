@@ -6,7 +6,7 @@
 }
 
 .mapboxgl-canvas {
-  height: 600px !important;
+  height: 500px !important;
   width: 100% !important;
 }
 
@@ -61,9 +61,5 @@
 
   .information-block {
     flex-direction: column;
-  }
-
-  .map {
-    height: 400px;
   }
 }
