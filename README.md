@@ -1,4 +1,5 @@
 # fancy-weather
+## Приложение https://k2-m5-fancy-weather.netlify.app/
 
 ## Задание
 
