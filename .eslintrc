@@ -19,6 +19,7 @@
   },
   "ignorePatterns": ["webpack.config.js", "node_modules/"],
   "rules": {
+    "comma-dangle": ["error", "only-multiline"],
     "linebreak-style": 0,
     "no-param-reassign": 0
   },
@@ -26,5 +27,5 @@
     "sourceType": "module",
     "ecmaVersion": 2017
   },
-  "parser": "babel-eslint" 
+  "parser": "babel-eslint"
 }

@@ -2,12 +2,10 @@
 
 .map-block {
   position: relative;
-  height: 100%;
-}
-
-.mapboxgl-canvas {
-  height: 500px !important;
-  width: 100% !important;
+  height: 500px;
+  width: 100%;
+  border-radius: 25px;
+  overflow: hidden;
 }
 
 .wrapper-map-block {
@@ -23,17 +21,14 @@
 
 #map {
   position: absolute;
+  top: 0;
+  bottom: 0;
   width: 100%;
-  clip-path: polygon(
-    0% 0%,
-    100% 0%,
-    100% 90%,
-    75% 90%,
-    75% 100%,
-    65% 90%,
-    0 90%
-  );
-  border-radius: 25px;
+  -webkit-mask-image: url('/assets/img/mask.png');
+  mask-image: url('/assets/img/mask.png');
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  z-index: 20;
 }
 
 .coordinate {
