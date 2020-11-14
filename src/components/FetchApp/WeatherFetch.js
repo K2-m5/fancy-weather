@@ -21,6 +21,10 @@ export default class WeatherApi extends Api {
     }${this.apiKeys.KEY}`;
 
     const data = await this.getJsonData(url);
+    if (!data) {
+      console.log('Data does not found');
+      return false;
+    }
     return data;
   }
 
@@ -30,6 +34,10 @@ export default class WeatherApi extends Api {
     }${this.apiKeys.KEY}`;
 
     const data = await this.getJsonData(url);
+    if (!data) {
+      console.log('Data does not found');
+      return false;
+    }
     return data;
   }
 

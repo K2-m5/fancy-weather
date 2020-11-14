@@ -13,17 +13,18 @@ export default class ApiService {
     this.data = data;
   }
 
-  getImage() {
-    this.imageApi.getImage(this.data.city).then((body) => {
+  async getImage(city) {
+    const image = await this.imageApi.getImage(city);
+    if (image) {
       document.body.style = `
-      background:linear-gradient(rgba(255,255,255,0.1), rgba(0,0,0,0.5)),url(${body.urls.regular});
+      background:linear-gradient(rgba(255,255,255,0.1), rgba(0,0,0,0.5)),url(${image.urls.regular});
       background-repeat: no-repeat;
       background-size: cover;
       background-attachment: fixed;
       background-position: top;
       font-family: Montserrat;
       `;
-    });
+    }
   }
 
   async getDataPlace() {
@@ -72,12 +73,19 @@ export default class ApiService {
     await this.getCoordinateByPlace(city);
     const dataWeather = await this.weatherApi.getDataWeatherByCity(city);
     const dataForecast = await this.weatherApi.getDataForecastByCity(city);
-    this.provideDataWeather(dataWeather, dataForecast);
-    console.log(this.data);
+    if (dataWeather && dataForecast) {
+      this.provideDataWeather(dataWeather, dataForecast);
+      console.log(this.data);
+      return;
+    }
+    console.log('Data does not found');
   }
 
   async getCoordinateByPlace(city) {
     const crd = await this.placeCrdApi.getCoordinateByPlace(city);
+    if (!crd.results) {
+      console.log('Data does not found');
+    }
     this.data.coordinate.ltd = String(crd.results[0].geometry.lat);
     this.data.coordinate.lng = String(crd.results[0].geometry.lng);
     console.log(crd);
@@ -85,7 +93,7 @@ export default class ApiService {
 
   async getData() {
     await this.getDataPlace();
-    this.getImage();
+    await this.getImage(this.data.city);
     await this.getDataWeather();
     console.log(this.data);
   }
