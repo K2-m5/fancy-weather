@@ -5,7 +5,7 @@ export default class UserPlaceApi extends Api {
     super();
     this.apiKeys = {
       TOKEN: 'token=aa64ada01df09a',
-      URL: 'https://ipinfo.io/json?'
+      URL: 'https://ipinfo.io/json?',
     };
   }
 

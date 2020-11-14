@@ -1,7 +1,7 @@
 const data = {
   coordinate: {
     ltd: '',
-    lng: ''
+    lng: '',
   },
   country: '',
   city: '',
@@ -13,11 +13,9 @@ const data = {
     humidity: '',
     description: '',
     icon: '',
-    wind: ''
+    wind: '',
   },
-  forecast: [
-  ]
-
+  forecast: [],
 };
 
 export default data;

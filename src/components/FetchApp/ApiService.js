@@ -61,10 +61,7 @@ export default class ApiService {
 
   async getDataWeather() {
     const {
-      coordinate: {
-        lng,
-        ltd
-      }
+      coordinate: { lng, ltd },
     } = this.data;
     const dataWeather = await this.weatherApi.getDataWeather(lng, ltd);
     const dataForecast = await this.weatherApi.getDataForecast(lng, ltd);

@@ -5,7 +5,7 @@ export default class PlaceCoordinateApi extends Api {
     super();
     this.apiKeys = {
       TOKEN: '&key=ee04ecdb632d47b0b1fc6b541148a06e',
-      URL: 'https://api.opencagedata.com/geocode/v1/json?q='
+      URL: 'https://api.opencagedata.com/geocode/v1/json?q=',
     };
   }
 

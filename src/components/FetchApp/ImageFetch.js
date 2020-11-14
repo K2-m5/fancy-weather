@@ -8,9 +8,14 @@ export default class ImageFetch extends Api {
   }
 
   async getImage(city) {
-    const url = `${this.urlBase + city + this.apiAccessKeys}`;
-
-    const data = await this.getJsonData(url);
-    return data;
+    try {
+      const url = `${this.urlBase + city + this.apiAccessKeys}`;
+      const data = await this.getJsonData(url);
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log(error.message);
+      return error;
+    }
   }
 }
