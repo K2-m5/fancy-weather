@@ -4,7 +4,7 @@ export default class Api {
       this.url = url;
       const response = await fetch(url);
       if (!response.ok) {
-        throw new Error(response.status);
+        return false;
       }
       const data = await response.json();
       return data;
