@@ -73,22 +73,24 @@ export default class ApiService {
     await this.getCoordinateByPlace(city);
     const dataWeather = await this.weatherApi.getDataWeatherByCity(city);
     const dataForecast = await this.weatherApi.getDataForecastByCity(city);
+    console.log(dataWeather);
     if (dataWeather && dataForecast) {
       this.provideDataWeather(dataWeather, dataForecast);
       console.log(this.data);
-      return;
+    } else {
+      console.log('Data does not found');
     }
-    console.log('Data does not found');
   }
 
   async getCoordinateByPlace(city) {
     const crd = await this.placeCrdApi.getCoordinateByPlace(city);
-    if (!crd.results) {
-      console.log('Data does not found');
+    if (crd.results.length) {
+      this.data.coordinate.ltd = String(crd.results[0].geometry.lat);
+      this.data.coordinate.lng = String(crd.results[0].geometry.lng);
+      console.log(crd);
+    } else {
+      console.log('Coordinate does not found');
     }
-    this.data.coordinate.ltd = String(crd.results[0].geometry.lat);
-    this.data.coordinate.lng = String(crd.results[0].geometry.lng);
-    console.log(crd);
   }
 
   async getData() {

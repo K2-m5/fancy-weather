@@ -15,7 +15,7 @@ export default class PlaceCoordinateApi extends Api {
     return data;
   }
 
-  async getInfoBySity(query, lang) {
+  async getInfoByCity(query, lang) {
     const url = `${
       this.apiKeys.URL + query + this.apiKeys.KEY + this.apiKeys.PARAMS
     }&language=${lang}`;

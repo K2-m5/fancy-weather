@@ -11,9 +11,7 @@ export default class UserPlaceApi extends Api {
 
   async getPlaceByIp() {
     const url = this.apiKeys.URL + this.apiKeys.TOKEN;
-
     const data = await this.getJsonData(url);
-
     return data;
   }
 }
