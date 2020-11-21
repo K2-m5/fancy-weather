@@ -11,13 +11,13 @@ export default class WeatherApi extends Api {
       LAT: 'lat=',
       LONG: '&lon=',
       LANG: '&lang=en',
-      UNITS: '&units',
+      UNITS: '&units=',
     };
   }
 
   async getDataWeatherByCity(city) {
     const url = `${this.apiKeys.URL + this.apiKeys.WEATHER}q=${city}${this.apiKeys.LANG}${
-      this.apiKeys.UNITS
+      this.apiKeys.UNITS + WeatherApi.getUnits()
     }${this.apiKeys.KEY}`;
 
     const data = await this.getJsonData(url);
@@ -29,7 +29,7 @@ export default class WeatherApi extends Api {
 
   async getDataForecastByCity(city) {
     const url = `${this.apiKeys.URL + this.apiKeys.FORECAST}q=${city}${this.apiKeys.LANG}${
-      this.apiKeys.UNITS
+      this.apiKeys.UNITS + WeatherApi.getUnits()
     }${this.apiKeys.KEY}`;
 
     const data = await this.getJsonData(url);
@@ -48,6 +48,7 @@ export default class WeatherApi extends Api {
       this.apiKeys.LONG +
       lng +
       this.apiKeys.UNITS +
+      WeatherApi.getUnits() +
       this.apiKeys.KEY;
 
     const data = await this.getJsonData(url);
@@ -63,9 +64,17 @@ export default class WeatherApi extends Api {
       this.apiKeys.LONG +
       lng +
       this.apiKeys.UNITS +
+      WeatherApi.getUnits() +
       this.apiKeys.KEY;
 
     const data = await this.getJsonData(url);
     return data;
+  }
+
+  static getUnits() {
+    if (localStorage.getItem('temperature') === 'F') {
+      return 'imperial';
+    }
+    return 'metric';
   }
 }

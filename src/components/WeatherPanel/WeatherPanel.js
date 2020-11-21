@@ -12,7 +12,7 @@ const dayToLabelMap = {
   3: 'Wednesday',
   4: 'Thursday',
   5: 'Friday',
-  6: 'Saturday'
+  6: 'Saturday',
 };
 
 export default class WeatherPanel {
@@ -21,10 +21,26 @@ export default class WeatherPanel {
     this.weatherCity = createElement('div', 'weather_today_block--city_country', 'text_base');
     this.weatherDate = createElement('div', 'text_base', 'weather_today_block--date_time');
     this.weatherTodayTemp = createElement('div', 'text_base', 'weather_today_block--temp');
-    this.weatherTodayInfoListWeather = createElement('div', 'text_base', 'weather_today_block--info_list-item');
-    this.weatherTodayInfoListFeels = createElement('div', 'text_base', 'weather_today_block--info_list-item');
-    this.weatherTodayInfoListWind = createElement('div', 'text_base', 'weather_today_block--info_list-item');
-    this.weatherTodayInfoListHumidity = createElement('div', 'text_base', 'weather_today_block--info_list-item');
+    this.weatherTodayInfoListWeather = createElement(
+      'div',
+      'text_base',
+      'weather_today_block--info_list-item'
+    );
+    this.weatherTodayInfoListFeels = createElement(
+      'div',
+      'text_base',
+      'weather_today_block--info_list-item'
+    );
+    this.weatherTodayInfoListWind = createElement(
+      'div',
+      'text_base',
+      'weather_today_block--info_list-item'
+    );
+    this.weatherTodayInfoListHumidity = createElement(
+      'div',
+      'text_base',
+      'weather_today_block--info_list-item'
+    );
     this.weatherTodayImg = createElement('img', 'weather_today_block--sign');
     this.tempToday = [];
     this.tempThreeDaysForecast = [];
@@ -32,24 +48,16 @@ export default class WeatherPanel {
 
   updateWeatherData(city, tempToday, weather, feels, wind, humidity, weatherImg) {
     this.weatherCity.innerText = city;
-    this.weatherTodayTemp.innerText = changeKtoC(tempToday);
+    this.weatherTodayTemp.innerText = tempToday;
     this.weatherTodayInfoListWeather.innerText = weather;
-    this.weatherTodayInfoListFeels.innerText = `Feels like: ${changeKtoC(feels)}`;
+    this.weatherTodayInfoListFeels.innerText = `Feels like: ${feels}`;
     this.weatherTodayInfoListWind.innerText = `Wind: ${wind}`;
     this.weatherTodayInfoListHumidity.innerText = `Humidity: ${humidity}`;
     this.weatherTodayImg.setAttribute('src', `http://openweathermap.org/img/w/${weatherImg}.png`);
   }
 
   createWeatherTodayBlock(rootElement, currentWeather, next3DaysWeather) {
-    const {
-      city,
-      tempToday,
-      weather,
-      feels,
-      wind,
-      humidity,
-      weatherImgCode
-    } = currentWeather;
+    const { city, tempToday, weather, feels, wind, humidity, weatherImgCode } = currentWeather;
     this.tempToday = tempToday;
     const weatherToday = createElement('div', 'weather-today');
     const weatherTodayInfoList = createElement('div', 'weather_today_block--info_list');
@@ -57,17 +65,25 @@ export default class WeatherPanel {
 
     this.updateDate();
     this.weatherCity.innerText = city;
-    this.weatherTodayTemp.innerText = changeKtoC(tempToday);
+    this.weatherTodayTemp.innerText = tempToday;
     this.weatherTodayInfoListWeather.innerText = weather;
-    this.weatherTodayInfoListFeels.innerText = `Feels like: ${changeKtoC(feels)}`;
+    this.weatherTodayInfoListFeels.innerText = `Feels like: ${Math.round(feels)}`;
     this.weatherTodayInfoListWind.innerText = `Wind: ${wind}`;
     this.weatherTodayInfoListHumidity.innerText = `Humidity: ${humidity}`;
-    this.weatherTodayImg.setAttribute('src', `http://openweathermap.org/img/w/${weatherImgCode}.png`);
+    this.weatherTodayImg.setAttribute(
+      'src',
+      `http://openweathermap.org/img/w/${weatherImgCode}.png`
+    );
 
     for (let i = 0; i < next3DaysWeather.length; i += 1) {
-      const { main: { temp }, weather } = next3DaysWeather[i];
+      const {
+        main: { temp },
+        weather,
+      } = next3DaysWeather[i];
 
-      let dayNumber = dayjs().add(i + 1, 'day').day();
+      let dayNumber = dayjs()
+        .add(i + 1, 'day')
+        .day();
       this.createDayWeatherItem(
         this.weatherNextDayList,
         dayToLabelMap[dayNumber],
@@ -84,11 +100,7 @@ export default class WeatherPanel {
       this.weatherTodayInfoListHumidity
     );
 
-    weatherToday.append(
-      this.weatherTodayTemp,
-      this.weatherTodayImg,
-      weatherTodayInfoList
-    );
+    weatherToday.append(this.weatherTodayTemp, this.weatherTodayImg, weatherTodayInfoList);
 
     this.weatherBlock.append(
       this.weatherCity,
@@ -105,10 +117,14 @@ export default class WeatherPanel {
 
   updateForecastData(next3DaysWeather) {
     for (let i = 0; i < next3DaysWeather.length; i += 1) {
-      const { dt_txt, main: { temp }, weather } = next3DaysWeather[i];
+      const {
+        dt_txt,
+        main: { temp },
+        weather,
+      } = next3DaysWeather[i];
       const date = new Date(dt_txt);
       this.weekDay.innerText = dayToLabelMap[date.getDay()];
-      this.temperature.innerText = changeKtoC(temp);
+      this.temperature.innerText = temp;
       this.image.setAttribute('src', `http://openweathermap.org/img/w/${weather[0].icon}.png`);
     }
   }
@@ -120,14 +136,10 @@ export default class WeatherPanel {
     this.image = createElement('img', 'day_block--sign');
 
     this.weekDay.innerText = day;
-    this.temperature.innerText = changeKtoC(temp);
+    this.temperature.innerText = Math.round(temp);
     this.image.setAttribute('src', `http://openweathermap.org/img/w/${imageCode}.png`);
 
-    dayRoot.append(
-      this.weekDay,
-      this.temperature,
-      this.image
-    );
+    dayRoot.append(this.weekDay, this.temperature, this.image);
 
     container.appendChild(dayRoot);
   }
@@ -142,14 +154,20 @@ export default class WeatherPanel {
   }
 
   CtoF() {
-    const newArr = this.tempThreeDaysForecast.map((el) => changeKtoC(el));
-    this.weatherTodayTemp.innerText = changeKtoC(this.tempToday);
+    const newArr = [];
+    document
+      .querySelectorAll('.day_block--temp')
+      .forEach((el) => newArr.push(changeKtoC(Number(el.innerHTML))));
+    this.weatherTodayTemp.innerText = changeKtoC(this.weatherTodayTemp.innerText);
     updateTemperature(newArr);
   }
 
   FtoC() {
-    const newArr = this.tempThreeDaysForecast.map((el) => changeKtoF(el));
-    this.weatherTodayTemp.innerText = changeKtoF(this.tempToday);
+    const newArr = [];
+    document
+      .querySelectorAll('.day_block--temp')
+      .forEach((el) => newArr.push(changeKtoF(Number(el.innerHTML))));
+    this.weatherTodayTemp.innerText = changeKtoF(this.weatherTodayTemp.innerText);
     updateTemperature(newArr);
   }
 }

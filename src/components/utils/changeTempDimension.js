@@ -1,9 +1,9 @@
 function changeKtoC(t) {
-  return (Math.round(t - 273.15) + '' + String.fromCharCode(176));
+  return Math.round(((t - 32) * 5) / 9);
 }
 
 function changeKtoF(t) {
-  return ((Math.round(t * 1.8 - 459.67) + '' + String.fromCharCode(176)));
+  return Math.round((t * 9) / 5) + 32;
 }
 
 function updateTemperature(arr) {
