@@ -68,20 +68,14 @@ export class BuildDom {
         this.data.weather.icon
       );
       this.weatherTodayApp.updateForecastData(this.data.forecast);
-      this.mapBlock.updateMap(
-        this.data.coordinate.lng,
-        this.data.coordinate.ltd
-      );
+      this.mapBlock.updateMap(this.data.coordinate.lng, this.data.coordinate.ltd);
       this.showApp();
-    }, 3000);
+    }, 0);
   }
 
   createControlBlock() {
     const headerRoot = createElement('div', 'controls_block');
-    headerRoot.append(
-      this.controlPanel.createControlBlock(),
-      this.searchPanel.createSearchBlock()
-    );
+    headerRoot.append(this.controlPanel.createControlBlock(), this.searchPanel.createSearchBlock());
 
     // this.searchPanel.formSearchRoot.addEventListener('submit', (e) => {
     //   e.preventDefault();
@@ -104,7 +98,7 @@ export class BuildDom {
             city: this.data.city,
             tempToday: this.data.weather.temp,
             weather: this.data.weather.description,
-            feels: this.data.weather.feelsLike,
+            feels: this.data.weather.feelLikes,
             wind: this.data.weather.wind,
             humidity: this.data.weather.humidity,
             weatherImgCode: this.data.weather.icon,
@@ -113,11 +107,8 @@ export class BuildDom {
         );
         this.bodyRoot.append(map);
         this.rootElement.append(this.bodyRoot);
-        this.mapBlock.addMap(
-          this.data.coordinate.lng,
-          this.data.coordinate.ltd
-        );
-      }, 3000);
+        this.mapBlock.addMap(this.data.coordinate.lng, this.data.coordinate.ltd);
+      }, 0);
     };
     startData();
   }
