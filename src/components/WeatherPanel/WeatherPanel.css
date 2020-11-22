@@ -41,7 +41,7 @@
   grid-template-areas:
     'temp sign'
     'temp prop';
-  grid-template-columns: 4fr 3fr;
+  grid-template-columns: 3fr 4fr;
   margin: 5px;
   padding: 20px;
   border-radius: 5px;
@@ -94,11 +94,10 @@
 }
 
 .day_block--temp {
-  padding: 15px 15px 0 15px;
+  padding: 30px 15px 0 0;
   font-size: 2em;
 }
 
 .day_block--sign {
-  width: 40%;
-  padding: 15px 15px 15px 0;
+  width: 60%;
 }

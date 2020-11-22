@@ -8,7 +8,7 @@ const data = {
   region: '',
   timezone: '',
   weather: {
-    feelLikes: '',
+    feelsLike: '',
     temp: '',
     humidity: '',
     description: '',

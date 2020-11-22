@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { createElement } from '../utils/createElement';
 import * as dayjs from 'dayjs';
-import { changeKtoC, changeKtoF, updateTemperature } from '../utils//changeTempDimension';
+import { changeKtoC, changeKtoF, updateTemperature } from '../utils/changeTempDimension';
 
 import './WeatherPanel.css';
 
@@ -46,14 +46,14 @@ export default class WeatherPanel {
     this.tempThreeDaysForecast = [];
   }
 
-  updateWeatherData(city, tempToday, weather, feels, wind, humidity, weatherImg) {
+  updateWeatherData(city, tempToday, weather, feels, wind, humidity, weatherImgCode) {
     this.weatherCity.innerText = city;
     this.weatherTodayTemp.innerText = tempToday;
     this.weatherTodayInfoListWeather.innerText = weather;
     this.weatherTodayInfoListFeels.innerText = `Feels like: ${feels}`;
     this.weatherTodayInfoListWind.innerText = `Wind: ${wind}`;
     this.weatherTodayInfoListHumidity.innerText = `Humidity: ${humidity}`;
-    this.weatherTodayImg.setAttribute('src', `http://openweathermap.org/img/w/${weatherImg}.png`);
+    this.weatherTodayImg.setAttribute('src', `assets/img/${weatherImgCode}.svg`);
   }
 
   createWeatherTodayBlock(rootElement, currentWeather, next3DaysWeather) {
@@ -67,13 +67,10 @@ export default class WeatherPanel {
     this.weatherCity.innerText = city;
     this.weatherTodayTemp.innerText = tempToday;
     this.weatherTodayInfoListWeather.innerText = weather;
-    this.weatherTodayInfoListFeels.innerText = `Feels like: ${Math.round(feels)}`;
+    this.weatherTodayInfoListFeels.innerText = `Feels like: ${feels}`;
     this.weatherTodayInfoListWind.innerText = `Wind: ${wind}`;
     this.weatherTodayInfoListHumidity.innerText = `Humidity: ${humidity}`;
-    this.weatherTodayImg.setAttribute(
-      'src',
-      `http://openweathermap.org/img/w/${weatherImgCode}.png`
-    );
+    this.weatherTodayImg.setAttribute('src', `assets/img/${weatherImgCode}.svg`);
 
     for (let i = 0; i < next3DaysWeather.length; i += 1) {
       const {
@@ -124,8 +121,8 @@ export default class WeatherPanel {
       } = next3DaysWeather[i];
       const date = new Date(dt_txt);
       this.weekDay.innerText = dayToLabelMap[date.getDay()];
-      this.temperature.innerText = temp;
-      this.image.setAttribute('src', `http://openweathermap.org/img/w/${weather[0].icon}.png`);
+      this.temperature.innerText = Math.round(temp);
+      this.image.setAttribute('src', `assets/img/${weather[0].icon}.svg`);
     }
   }
 
@@ -137,7 +134,7 @@ export default class WeatherPanel {
 
     this.weekDay.innerText = day;
     this.temperature.innerText = Math.round(temp);
-    this.image.setAttribute('src', `http://openweathermap.org/img/w/${imageCode}.png`);
+    this.image.setAttribute('src', `assets/img/${imageCode}.svg`);
 
     dayRoot.append(this.weekDay, this.temperature, this.image);
 

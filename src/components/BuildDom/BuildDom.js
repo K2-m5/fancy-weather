@@ -98,7 +98,7 @@ export class BuildDom {
             city: this.data.city,
             tempToday: this.data.weather.temp,
             weather: this.data.weather.description,
-            feels: this.data.weather.feelLikes,
+            feels: this.data.weather.feelsLike,
             wind: this.data.weather.wind,
             humidity: this.data.weather.humidity,
             weatherImgCode: this.data.weather.icon,

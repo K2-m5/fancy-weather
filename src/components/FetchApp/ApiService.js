@@ -51,8 +51,8 @@ export default class ApiService {
   }
 
   provideDataWeather(dataWeather, dataForecast) {
-    this.data.weather.feelLikes = dataWeather.main.feels_like;
-    this.data.weather.temp = dataWeather.main.temp;
+    this.data.weather.feelsLike = Math.round(dataWeather.main.feels_like);
+    this.data.weather.temp = Math.round(dataWeather.main.temp);
     this.data.weather.humidity = dataWeather.main.humidity;
     this.data.weather.description = dataWeather.weather[0].description;
     this.data.weather.icon = dataWeather.weather[0].icon;
