@@ -16,25 +16,25 @@ export default class SearchPanel {
     this.recognizing = false;
   }
 
-  recognitionHandler() {
+  recognitionHandler(handler) {
     this.recognition.addEventListener('start', () => {
       this.recognizing = true;
-      console.log(this.recognizing);
     });
 
     this.recognition.addEventListener('end', () => {
-      console.log(this.recognizing);
       this.recognizing = false;
       this.recognition.abort();
     });
 
     this.recognition.addEventListener('result', (t) => {
-      console.log(this.recognizing);
       this.recognizing = false;
       let { transcript } = t.results[0][0];
 
+      if (transcript === 0) {
+        return;
+      }
       this.inputSearch.value = transcript;
-      console.log(transcript);
+      handler(this.inputSearch.value);
       this.recognition.abort();
     });
   }
@@ -71,15 +71,8 @@ export default class SearchPanel {
       if (!this.recognizing) {
         this.recognition.start();
       }
-      console.log(this.recognizing);
-
-      if (this.inputSearch.value.length === 0) {
-        return;
-      }
-
-      handler(this.inputSearch.value);
     });
-    this.recognitionHandler();
+    this.recognitionHandler(handler);
   }
 
   renderDataLanguage(lang) {
