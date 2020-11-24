@@ -72,24 +72,7 @@ export default class WeatherPanel {
     this.weatherTodayInfoListHumidity.innerText = `Humidity: ${humidity}`;
     this.weatherTodayImg.setAttribute('src', `assets/img/${weatherImgCode}.svg`);
 
-    for (let i = 0; i < next3DaysWeather.length; i += 1) {
-      const {
-        main: { temp },
-        weather,
-      } = next3DaysWeather[i];
-
-      let dayNumber = dayjs()
-        .add(i + 1, 'day')
-        .day();
-      this.createDayWeatherItem(
-        this.weatherNextDayList,
-        dayToLabelMap[dayNumber],
-        temp,
-        weather[0].icon
-      );
-      this.tempThreeDaysForecast.push(temp);
-    }
-
+    this.createDayWeatherBlock(next3DaysWeather);
     weatherTodayInfoList.append(
       this.weatherTodayInfoListWeather,
       this.weatherTodayInfoListFeels,
@@ -110,6 +93,26 @@ export default class WeatherPanel {
     setInterval(() => {
       this.updateDate();
     }, 1000);
+  }
+
+  createDayWeatherBlock(forecast) {
+    for (let i = 0; i < forecast.length; i += 1) {
+      const {
+        main: { temp },
+        weather,
+      } = forecast[i];
+
+      let dayNumber = dayjs()
+        .add(i + 1, 'day')
+        .day();
+      this.createDayWeatherItem(
+        this.weatherNextDayList,
+        dayToLabelMap[dayNumber],
+        temp,
+        weather[0].icon
+      );
+      this.tempThreeDaysForecast.push(temp);
+    }
   }
 
   updateForecastData(next3DaysWeather) {

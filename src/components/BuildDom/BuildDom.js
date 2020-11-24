@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { createElement } from '../utils/createElement';
 import WeatherToday from '../WeatherPanel/WeatherPanel';
 import { ControlPanel } from '../ControlPanel/ControlPanel';
@@ -28,6 +27,7 @@ export class BuildDom {
       this.weatherTodayApp.CtoF.bind(this.weatherTodayApp)
     );
     this.searchPanel.bindClickFormSearch(this.searchHandler.bind(this));
+    this.searchPanel.bindClickVoiceBtn(this.searchHandler.bind(this));
   }
 
   hideApp() {
