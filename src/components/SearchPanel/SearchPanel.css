@@ -30,7 +30,8 @@ input[type='text'] {
 
 .search-btn {
   height: 40px;
-  width: 25%;
+  width: 20%;
+  padding: 0 5px;
   font-size: 18px;
   font-weight: 300;
   border: 1px solid #fff;

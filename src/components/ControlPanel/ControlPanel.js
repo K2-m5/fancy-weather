@@ -12,11 +12,7 @@ export class ControlPanel {
     this.switchUnit = createElement('label', 'switch-label');
     this.switchInput = createElement('input', 'switch-input');
     this.changeLanguage = createElement('select', 'drop-list-language');
-    this.changePicture = createElement(
-      'button',
-      'button-base',
-      'change-picture'
-    );
+    this.changePicture = createElement('button', 'button-base', 'change-picture');
     this.language = '';
     this.temperature = '';
   }
@@ -49,8 +45,8 @@ export class ControlPanel {
     languageBY.setAttribute('value', 'by');
     languageBY.innerText = 'BY';
 
-    // const iconRepeat = createElement('i', 'fas', 'fa-redo');
-    // this.changePicture.append(iconRepeat);
+    const iconRepeat = createElement('i', 'fas', 'fa-redo');
+    this.changePicture.append(iconRepeat);
 
     this.changeLanguage.addEventListener('click', (event) => {
       this.language = event.target.value;
@@ -80,11 +76,7 @@ export class ControlPanel {
     this.switchUnitInput = this.temperature;
     this.changeLanguage.value = this.language;
 
-    buttonPanel.append(
-      this.changePicture,
-      this.changeLanguage,
-      this.switchUnitTemp
-    );
+    buttonPanel.append(this.changePicture, this.changeLanguage, this.switchUnitTemp);
 
     return buttonPanel;
   }
