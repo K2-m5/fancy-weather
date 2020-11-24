@@ -18,7 +18,7 @@ input[type='text'] {
 
 .input_base {
   width: 70%;
-  height: 44px;
+  height: 40px;
   font-family: Arial, Helvetica, sans-serif;
   color: #fff;
   background: rgba(76, 82, 85, 0.4);
@@ -29,11 +29,20 @@ input[type='text'] {
 }
 
 .search-btn {
-  width: 29%;
-  height: 44px;
-  font-weight: 700;
-  background: grey;
+  height: 40px;
+  width: 25%;
+  font-size: 18px;
+  font-weight: 300;
   border: 1px solid #fff;
   border-left-width: 0;
   border-radius: 0 5px 5px 0;
+}
+
+.voice-btn {
+  width: 10%;
+  font-size: 18px;
+  border: 1px solid #fff;
+  border-radius: 0;
+  border-left: 0;
+  border-right: 0;
 }
