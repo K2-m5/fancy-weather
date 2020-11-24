@@ -70,7 +70,13 @@ export default class ApiService {
   }
 
   async getDataUserRequest(city) {
-    await this.getCoordinateByPlace(city);
+    const dataPlace = await this.placeCrdApi.getCoordinateByPlace(city);
+    if (dataPlace) {
+      this.provideDataPlace(dataPlace);
+    } else {
+      return;
+    }
+    await this.getImage(city);
     const dataWeather = await this.weatherApi.getDataWeatherByCity(city);
     const dataForecast = await this.weatherApi.getDataForecastByCity(city);
     if (dataWeather && dataForecast) {
@@ -81,18 +87,13 @@ export default class ApiService {
     }
   }
 
-  async getCoordinateByPlace(city) {
-    const crd = await this.placeCrdApi.getCoordinateByPlace(city);
-    if (crd.results.length) {
-      this.data.city = crd.results[0].components.city;
-      this.data.region = crd.results[0].components.country;
-      this.data.country = crd.results[0].components.country;
-      this.data.timezone = crd.results[0].annotations.timezone.name;
-      this.data.coordinate.ltd = String(crd.results[0].geometry.lat);
-      this.data.coordinate.lng = String(crd.results[0].geometry.lng);
-    } else {
-      console.log('Coordinate does not found');
-    }
+  provideDataPlace(crd) {
+    this.data.city = crd.results[0].components.city;
+    this.data.region = crd.results[0].components.country;
+    this.data.country = crd.results[0].components.country;
+    this.data.timezone = crd.results[0].annotations.timezone.name;
+    this.data.coordinate.ltd = String(crd.results[0].geometry.lat);
+    this.data.coordinate.lng = String(crd.results[0].geometry.lng);
   }
 
   async getData() {

@@ -27,7 +27,6 @@ export class BuildDom {
       this.weatherTodayApp.CtoF.bind(this.weatherTodayApp)
     );
     this.searchPanel.bindClickFormSearch(this.searchHandler.bind(this));
-    this.searchPanel.bindClickVoiceBtn(this.searchHandler.bind(this));
   }
 
   hideApp() {
@@ -76,11 +75,6 @@ export class BuildDom {
   createControlBlock() {
     const headerRoot = createElement('div', 'controls_block');
     headerRoot.append(this.controlPanel.createControlBlock(), this.searchPanel.createSearchBlock());
-
-    // this.searchPanel.formSearchRoot.addEventListener('submit', (e) => {
-    //   e.preventDefault();
-    //   this.searchHandler(this.searchPanel.inputSearch.value);
-    // });
 
     this.rootElement.append(headerRoot);
   }

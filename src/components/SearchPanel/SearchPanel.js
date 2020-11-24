@@ -35,6 +35,7 @@ export default class SearchPanel {
       }
       this.inputSearch.value = transcript;
       handler(this.inputSearch.value);
+      this.inputSearch.value = '';
       this.recognition.abort();
     });
   }
@@ -56,23 +57,32 @@ export default class SearchPanel {
   }
 
   bindClickFormSearch(handler) {
-    this.formSearchRoot.addEventListener('submit', (e) => {
+    this.buttonSearch.addEventListener('click', (e) => {
       e.preventDefault();
       if (this.inputSearch.value.length === 0) {
         return;
       }
       handler(this.inputSearch.value);
+      this.inputSearch.value = '';
     });
-  }
 
-  bindClickVoiceBtn(handler) {
     this.voiceButton.addEventListener('click', (e) => {
       e.preventDefault();
       if (!this.recognizing) {
         this.recognition.start();
       }
+      this.recognitionHandler(handler);
     });
-    this.recognitionHandler(handler);
+
+    document.body.addEventListener('keypress', (e) => {
+      if (e.code !== 'Enter') return;
+      e.preventDefault();
+      if (this.inputSearch.value.length === 0) {
+        return;
+      }
+      handler(this.inputSearch.value);
+      this.inputSearch.value = '';
+    });
   }
 
   renderDataLanguage(lang) {
