@@ -10,15 +10,15 @@ export default class WeatherApi extends Api {
       WEATHER: 'weather?',
       LAT: 'lat=',
       LONG: '&lon=',
-      LANG: '&lang=en',
+      LANG: '&lang=',
       UNITS: '&units=',
     };
   }
 
   async getDataWeatherByCity(city) {
-    const url = `${this.apiKeys.URL + this.apiKeys.WEATHER}q=${city}${this.apiKeys.LANG}${
-      this.apiKeys.UNITS + WeatherApi.getUnits()
-    }${this.apiKeys.KEY}`;
+    const url = `${this.apiKeys.URL + this.apiKeys.WEATHER}q=${city}${
+      this.apiKeys.LANG + WeatherApi.getLanguage()
+    }${this.apiKeys.UNITS + WeatherApi.getUnits()}${this.apiKeys.KEY}`;
 
     const data = await this.getJsonData(url);
     if (!data) {
@@ -28,9 +28,9 @@ export default class WeatherApi extends Api {
   }
 
   async getDataForecastByCity(city) {
-    const url = `${this.apiKeys.URL + this.apiKeys.FORECAST}q=${city}${this.apiKeys.LANG}${
-      this.apiKeys.UNITS + WeatherApi.getUnits()
-    }${this.apiKeys.KEY}`;
+    const url = `${this.apiKeys.URL + this.apiKeys.FORECAST}q=${city}${
+      this.apiKeys.LANG + WeatherApi.getLanguage()
+    }${this.apiKeys.UNITS + WeatherApi.getUnits()}${this.apiKeys.KEY}`;
 
     const data = await this.getJsonData(url);
     if (!data) {
@@ -47,6 +47,8 @@ export default class WeatherApi extends Api {
       ltd +
       this.apiKeys.LONG +
       lng +
+      this.apiKeys.LANG +
+      WeatherApi.getLanguage() +
       this.apiKeys.UNITS +
       WeatherApi.getUnits() +
       this.apiKeys.KEY;
@@ -63,6 +65,8 @@ export default class WeatherApi extends Api {
       ltd +
       this.apiKeys.LONG +
       lng +
+      this.apiKeys.LANG +
+      WeatherApi.getLanguage() +
       this.apiKeys.UNITS +
       WeatherApi.getUnits() +
       this.apiKeys.KEY;
@@ -76,5 +80,10 @@ export default class WeatherApi extends Api {
       return 'imperial';
     }
     return 'metric';
+  }
+
+  static getLanguage() {
+    if (localStorage.getItem('language') === 'by') return 'ru';
+    return localStorage.getItem('language');
   }
 }
