@@ -13,4 +13,8 @@ function updateTemperature(arr) {
   }
 }
 
-export { changeKtoC, changeKtoF, updateTemperature };
+export default {
+  changeKtoC,
+  changeKtoF,
+  updateTemperature,
+};

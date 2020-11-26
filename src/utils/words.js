@@ -1,0 +1,58 @@
+const language = {
+  en: {
+    language: 'en',
+    searchElements: 'Search',
+    latitude: 'Latitude:',
+    longitude: 'Longitude:',
+    feelsLike: 'Feels like:',
+    wind: 'Wind:',
+    humidity: 'Humidity:',
+    nameWeek: {
+      0: 'Sunday',
+      1: 'Monday',
+      2: 'Tuesday',
+      3: 'Wednesday',
+      4: 'Thursday',
+      5: 'Friday',
+      6: 'Saturday',
+    },
+  },
+  ru: {
+    language: 'ru',
+    searchElements: 'Поиск',
+    latitude: 'Широта:',
+    longitude: 'Долгота:',
+    feelsLike: 'Ощущается:',
+    wind: 'Ветер:',
+    humidity: 'Влажность:',
+    nameWeek: {
+      0: 'Воскресенье',
+      1: 'Понедельник',
+      2: 'Вторник',
+      3: 'Среда',
+      4: 'Четверг',
+      5: 'Пятница',
+      6: 'Суббота',
+    },
+  },
+  by: {
+    language: 'by',
+    searchElements: 'Пошук',
+    latitude: 'Шырата:',
+    longitude: 'Даўгата:',
+    feelsLike: 'Адчувацца:',
+    wind: 'Вецер:',
+    humidity: 'Вільготнасць:',
+    nameWeek: {
+      0: 'нядзеля',
+      1: 'панядзелак',
+      2: 'аўторак',
+      3: 'серада',
+      4: 'чацьверг',
+      5: 'пятніца',
+      6: 'субота',
+    },
+  },
+};
+
+export default language;
