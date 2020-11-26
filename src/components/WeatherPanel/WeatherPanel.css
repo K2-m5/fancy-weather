@@ -25,9 +25,10 @@
 .weather_today_block--city_country,
 .weather_today_block--date_time {
   margin: 5px;
-  padding: 20px;
+  padding: 15px;
+  border: 1px solid #fff;
   border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #4c525566;
 }
 
 .weather_today_block--date_time {
@@ -43,10 +44,11 @@
     'temp prop';
   grid-template-columns: 3fr 4fr;
   margin: 5px;
-  padding: 20px;
+  padding: 15px;
   border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #4c525566;
   justify-items: center;
+  border: 1px solid #fff;
 }
 
 .weather_today_block--sign {
@@ -75,9 +77,10 @@
   display: flex;
   justify-content: space-around;
   margin: 5px;
-  padding: 20px;
+  padding: 15px;
   border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #4c525566;
+  border: 1px solid #fff;
 }
 
 .day_block {
@@ -94,7 +97,7 @@
 }
 
 .day_block--temp {
-  padding: 30px 15px 0 0;
+  padding: 15px 15px 0 0;
   font-size: 2em;
 }
 

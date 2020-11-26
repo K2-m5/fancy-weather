@@ -21,7 +21,7 @@ input[type='text'] {
   height: 40px;
   font-family: Arial, Helvetica, sans-serif;
   color: #fff;
-  background: rgba(76, 82, 85, 0.4);
+  background: #4c525566;
   border: 1px solid #fff;
   border-right-width: 0;
   border-radius: 5px 0 0 5px;
@@ -30,8 +30,8 @@ input[type='text'] {
 
 .search-btn {
   height: 40px;
-  width: 20%;
-  padding: 0 5px;
+  width: auto;
+  padding: 0 10px;
   font-size: 18px;
   font-weight: 300;
   border: 1px solid #fff;

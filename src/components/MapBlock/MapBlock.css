@@ -2,7 +2,7 @@
 
 .map-block {
   position: relative;
-  height: 500px;
+  height: 450px;
   width: 100%;
   border-radius: 25px;
   overflow: hidden;
@@ -13,8 +13,9 @@
   flex-grow: 1;
   flex-basis: 35%;
   flex-direction: column;
+  justify-content: space-between;
   margin: 5px;
-  padding: 20px;
+  padding: 15px;
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.5);
 }
@@ -45,7 +46,22 @@
   margin: 5px;
 }
 
+@media (max-width: 1024px) {
+  .map-block {
+    height: 450px;
+  }
+}
+
+@media (max-width: 900px) {
+  .map-block {
+    height: 400px;
+  }
+}
+
 @media (max-width: 640px) {
+  .map-block {
+    height: 350px;
+  }
   .controls_block {
     flex-direction: column;
   }
