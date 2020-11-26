@@ -1,21 +1,23 @@
-import { createElement } from '../utils/createElement';
+import { createElement } from '../../utils/createElement';
 import WeatherToday from '../WeatherPanel/WeatherPanel';
 import { ControlPanel } from '../ControlPanel/ControlPanel';
 import SearchPanel from '../SearchPanel/SearchPanel';
 import MapBlock from '../MapBlock/MapBlock';
-import { mapKey } from '../const/const';
+import mapKey from '../../config/config';
 import ApiService from '../FetchApp/ApiService';
 import data from '../FetchApp/data';
+import language from '../../utils/words';
 
-export class BuildDom {
+export class App {
   constructor(rootElement) {
     this.rootElement = rootElement;
-    this.weatherTodayApp = new WeatherToday();
+    this.weatherPanel = new WeatherToday();
     this.mapBlock = new MapBlock(mapKey);
     this.controlPanel = new ControlPanel(rootElement);
     this.searchPanel = new SearchPanel();
     this.api = new ApiService();
     this.data = data;
+    this.language = localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
 
     this.bodyRoot = createElement('div', 'information-block');
     this.root = document.getElementById('root');
@@ -23,9 +25,11 @@ export class BuildDom {
 
     this.controlPanel.bindClickImageBtn(this.api.getImage.bind(this.api));
     this.controlPanel.bindClickSwitchBtn(
-      this.weatherTodayApp.FtoC.bind(this.weatherTodayApp),
-      this.weatherTodayApp.CtoF.bind(this.weatherTodayApp)
+      this.weatherPanel.FtoC.bind(this.weatherPanel),
+      this.weatherPanel.CtoF.bind(this.weatherPanel)
     );
+    this.controlPanel.bindClickLanguageBtn(this.changeLanguageHandler.bind(this));
+
     this.searchPanel.bindClickFormSearch(this.searchHandler.bind(this));
   }
 
@@ -46,8 +50,36 @@ export class BuildDom {
   }
 
   changeLanguageHandler(lang) {
-    this.mapBlock.renderDataLanguageMap(lang);
-    this.searchPanel.renderDataLanguage(lang);
+    this.mapBlock.renderDataLanguageMap(language[lang]);
+    this.searchPanel.renderDataLanguage(language[lang].searchElements);
+    this.weatherPanel.renderTranslate(language[lang]);
+  }
+
+  async createApp() {
+    await this.api.getData();
+
+    setTimeout(() => {
+      this.hideLouder();
+      const map = this.mapBlock.createMapBlock(language[this.language]);
+      this.createControlBlock();
+      this.weatherPanel.createWeatherTodayBlock(
+        this.bodyRoot,
+        {
+          city: this.data.city,
+          tempToday: this.data.weather.temp,
+          weather: this.data.weather.description,
+          feels: this.data.weather.feelsLike,
+          wind: this.data.weather.wind,
+          humidity: this.data.weather.humidity,
+          weatherImgCode: this.data.weather.icon,
+        },
+        this.data.forecast,
+        language[this.language]
+      );
+      this.bodyRoot.append(map);
+      this.rootElement.append(this.bodyRoot);
+      this.mapBlock.addMap(this.data.coordinate.lng, this.data.coordinate.ltd);
+    }, 0);
   }
 
   async searchHandler(searchString) {
@@ -57,7 +89,7 @@ export class BuildDom {
 
     setTimeout(() => {
       this.hideLouder();
-      this.weatherTodayApp.updateWeatherData(
+      this.weatherPanel.updateWeatherData(
         this.data.city,
         this.data.weather.temp,
         this.data.weather.description,
@@ -66,7 +98,7 @@ export class BuildDom {
         this.data.weather.humidity,
         this.data.weather.icon
       );
-      this.weatherTodayApp.updateForecastData(this.data.forecast);
+      this.weatherPanel.updateForecastData(this.data.forecast);
       this.mapBlock.updateMap(this.data.coordinate.lng, this.data.coordinate.ltd);
       this.showApp();
     }, 0);
@@ -74,41 +106,15 @@ export class BuildDom {
 
   createControlBlock() {
     const headerRoot = createElement('div', 'controls_block');
-    headerRoot.append(this.controlPanel.createControlBlock(), this.searchPanel.createSearchBlock());
-
+    headerRoot.append(
+      this.controlPanel.createControlBlock(),
+      this.searchPanel.createSearchBlock(language[this.language].searchElements)
+    );
     this.rootElement.append(headerRoot);
   }
 
-  createWeatherBlock() {
-    const map = this.mapBlock.createMapBlock();
-    const startData = async () => {
-      await this.api.getData();
-      setTimeout(() => {
-        this.hideLouder();
-        this.createControlBlock();
-        this.weatherTodayApp.createWeatherTodayBlock(
-          this.bodyRoot,
-          {
-            city: this.data.city,
-            tempToday: this.data.weather.temp,
-            weather: this.data.weather.description,
-            feels: this.data.weather.feelsLike,
-            wind: this.data.weather.wind,
-            humidity: this.data.weather.humidity,
-            weatherImgCode: this.data.weather.icon,
-          },
-          this.data.forecast
-        );
-        this.bodyRoot.append(map);
-        this.rootElement.append(this.bodyRoot);
-        this.mapBlock.addMap(this.data.coordinate.lng, this.data.coordinate.ltd);
-      }, 0);
-    };
-    startData();
-  }
-
-  buildDom() {
+  initApp() {
     this.showLouder();
-    this.createWeatherBlock();
+    this.createApp();
   }
 }

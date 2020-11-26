@@ -1,7 +1,7 @@
-import { BuildDom } from './components/BuildDom/BuildDom';
+import { App } from './components/app/app';
 
 import './styles.css';
 
-const buildDom = new BuildDom(document.getElementById('root'));
+const buildDom = new App(document.getElementById('root'));
 
-buildDom.buildDom();
+buildDom.initApp();

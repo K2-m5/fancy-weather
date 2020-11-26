@@ -1,5 +1,5 @@
-import { createElement } from '../utils/createElement';
-import { symbolCoordinate } from '../const/symbol';
+import { createElement } from '../../utils/createElement';
+import { symbolCoordinate } from '../../utils/symbol';
 
 import './ControlPanel.css';
 
@@ -13,6 +13,7 @@ export class ControlPanel {
     this.switchInput = createElement('input', 'switch-input');
     this.changeLanguage = createElement('select', 'drop-list-language');
     this.changePicture = createElement('button', 'button-base', 'change-picture');
+    this.changeLanguage = createElement('select', 'drop-list-language');
     this.language = '';
     this.temperature = '';
   }
@@ -33,7 +34,7 @@ export class ControlPanel {
     }
 
     const buttonPanel = createElement('div', 'wrapper', 'button-panel');
-    this.changeLanguage = createElement('select', 'drop-list-language');
+
     const languageEN = createElement('option', 'item-language-en');
     const languageRU = createElement('option', 'item-language-ru');
     const languageBY = createElement('option', 'item-language-by');
@@ -47,11 +48,6 @@ export class ControlPanel {
 
     const iconRepeat = createElement('i', 'fas', 'fa-redo');
     this.changePicture.append(iconRepeat);
-
-    this.changeLanguage.addEventListener('click', (event) => {
-      this.language = event.target.value;
-      localStorage.setItem('language', this.language);
-    });
 
     this.switchSpan = createElement('span', 'switch-span');
     const switchSpanHandle = createElement('span', 'switch-handle');
@@ -79,6 +75,16 @@ export class ControlPanel {
     buttonPanel.append(this.changePicture, this.changeLanguage, this.switchUnitTemp);
 
     return buttonPanel;
+  }
+
+  bindClickLanguageBtn(handler) {
+    this.changeLanguage.addEventListener('click', (event) => {
+      if (this.language !== event.target.value) {
+        this.language = event.target.value;
+        localStorage.setItem('language', this.language);
+        handler(this.language);
+      }
+    });
   }
 
   bindClickImageBtn(handler) {
