@@ -39,15 +39,15 @@
 .weather-today {
   display: grid;
   align-items: center;
+  justify-items: center;
   grid-template-areas:
     'temp sign'
     'temp prop';
-  grid-template-columns: 3fr 4fr;
+  grid-template-columns: 2fr 4fr;
   margin: 5px;
   padding: 15px;
   border-radius: 5px;
   background-color: #4c525566;
-  justify-items: center;
   border: 1px solid #fff;
 }
 
@@ -58,18 +58,39 @@
 
 .weather_today_block--temp {
   grid-area: temp;
+  display: flex;
+  justify-content: space-around;
+}
+
+.weather_today_block--temp-item {
   font-weight: 400;
   font-size: 4em;
 }
 
 .weather_today_block--info_list {
   grid-area: prop;
-  align-self: flex-start;
-  justify-self: left;
+  justify-self: stretch;
+  list-style: none;
 }
 
 .weather_today_block--info_list-item {
+  display: flex;
   padding: 10px 0 0 10px;
+}
+
+.weather_today_block--temp-item_symbol {
+  font-weight: 400;
+  font-size: 4em;
+}
+
+.info_list--item-key {
+  width: 70%;
+  font-weight: 600;
+  font-size: 1em;
+}
+
+.info_list--item-value {
+  font-weight: 600;
   font-size: 1em;
 }
 
@@ -86,6 +107,7 @@
 .day_block {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   width: 33%;
 }
 
@@ -97,10 +119,20 @@
 }
 
 .day_block--temp {
-  padding: 15px 15px 0 0;
+  align-self: center;
   font-size: 2em;
 }
 
 .day_block--sign {
   width: 60%;
+}
+
+@media (max-width: 930px) {
+  .info_list--item-key {
+    font-size: 0.9em;
+  }
+
+  .info_list--item-key {
+    font-size: 0.9em;
+  }
 }
