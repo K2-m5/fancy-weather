@@ -1,5 +1,5 @@
-import { createElement } from '../utils/createElement';
-import { words } from '../const/words';
+/* eslint-disable no-undef */
+import { createElement } from '../../utils/createElement';
 
 import './SearchPanel.css';
 
@@ -40,13 +40,13 @@ export default class SearchPanel {
     });
   }
 
-  createSearchBlock() {
+  createSearchBlock(text) {
     const searchPanel = createElement('div', 'wrapper', 'search-panel');
     const voiceSymbol = createElement('i', 'fas', 'fa-microphone');
     this.formSearchRoot.setAttribute('name', 'search');
     this.inputSearch.setAttribute('type', 'text');
     this.buttonSearch.id = 'buttonSearch';
-    this.buttonSearch.innerText = 'Search';
+    this.buttonSearch.innerText = text;
     this.voiceButton.append(voiceSymbol);
 
     this.formSearchRoot.append(this.inputSearch, this.voiceButton, this.buttonSearch);
@@ -85,8 +85,7 @@ export default class SearchPanel {
     });
   }
 
-  renderDataLanguage(lang) {
-    let buttonSearchText = words.find((item) => item.language === lang);
-    this.buttonSearch.innerText = buttonSearchText.searchElements;
+  renderDataLanguage(text) {
+    this.buttonSearch.innerText = text;
   }
 }

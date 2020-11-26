@@ -1,7 +1,6 @@
-import { createElement } from '../utils/createElement';
+import { createElement } from '../../utils/createElement';
 import mapboxgl from 'mapbox-gl';
-import { words } from '../const/words';
-import { symbolCoordinate } from '../const/symbol';
+import { symbolCoordinate } from '../../utils/symbol';
 
 import './MapBlock.css';
 
@@ -15,24 +14,26 @@ export default class MapBlock {
     this.mapBlock = createElement('div', 'map-block');
     this.mapBlockWrapper = createElement('div', 'wrapper-map-block');
     this.mapboxGl.accessToken = mapKey;
-    this.latitude = createElement('div', 'text_base', 'latitude');
-    this.latitudeValue = createElement('div', 'text_base', 'latitude_value');
-    this.longitude = createElement('div', 'text_base', 'longitude');
-    this.longitudeValue = createElement('div', 'text_base', 'longitude_value');
+    this.latitude = createElement('div', 'latitude');
+    this.latitudeValue = createElement('div', 'latitude_value');
+    this.longitude = createElement('div', 'longitude');
+    this.longitudeValue = createElement('div', 'longitude_value');
   }
 
-  createMapBlock() {
+  createMapBlock(lang) {
     const map = createElement('div', 'map');
+    const coordinatedWrapper = createElement('div', 'coordinate--wrapper');
     const coordinateLat = createElement('div', 'coordinate');
     const coordinateLong = createElement('div', 'coordinate');
     map.id = 'map';
 
-    this.latitude.innerText = 'Latitude';
-    this.longitude.innerText = 'Longitude';
+    this.latitude.innerText = lang.latitude;
+    this.longitude.innerText = lang.longitude;
     coordinateLat.append(this.latitude, this.latitudeValue);
     coordinateLong.append(this.longitude, this.longitudeValue);
+    coordinatedWrapper.append(coordinateLat, coordinateLong);
     this.mapBlock.append(map);
-    this.mapBlockWrapper.append(this.mapBlock, coordinateLat, coordinateLong);
+    this.mapBlockWrapper.append(this.mapBlock, coordinatedWrapper);
     return this.mapBlockWrapper;
   }
 
@@ -69,8 +70,7 @@ export default class MapBlock {
   }
 
   renderDataLanguageMap(lang) {
-    let wordText = words.find((item) => item.language === lang);
-    this.latitude.innerText = wordText.latitude;
-    this.longitude.innerText = wordText.longitude;
+    this.latitude.innerText = lang.latitude;
+    this.longitude.innerText = lang.longitude;
   }
 }

@@ -32,18 +32,23 @@
   z-index: 20;
 }
 
+.coordinate--wrapper {
+  margin: 5px;
+  padding: 5px 15px 10px;
+  background-color: #4c525566;
+  border: 1px solid #fff;
+  border-radius: 5px;
+}
+
 .coordinate {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
-}
-
-.map_latitude {
-  margin: 5px;
-}
-
-.map_longitude {
-  margin: 5px;
+  font-weight: 600;
+  font-size: 1em;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fff;
+  text-transform: uppercase;
 }
 
 @media (max-width: 1024px) {
