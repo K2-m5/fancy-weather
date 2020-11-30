@@ -5,7 +5,7 @@ import './ControlPanel.css';
 
 const { hour } = symbolCoordinate;
 
-export class ControlPanel {
+export default class ControlPanel {
   constructor(rootElement) {
     this.rootElement = rootElement;
     this.switchUnitTemp = createElement('div', 'switch-temp');

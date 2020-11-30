@@ -1,6 +1,6 @@
 import { createElement } from '../../utils/createElement';
 import WeatherToday from '../WeatherPanel/WeatherPanel';
-import { ControlPanel } from '../ControlPanel/ControlPanel';
+import ControlPanel from '../ControlPanel/ControlPanel';
 import SearchPanel from '../SearchPanel/SearchPanel';
 import MapBlock from '../MapBlock/MapBlock';
 import mapKey from '../../config/config';
@@ -53,6 +53,7 @@ export class App {
     this.mapBlock.renderDataLanguageMap(language[lang]);
     this.searchPanel.renderDataLanguage(language[lang].searchElements);
     this.weatherPanel.renderTranslate(language[lang]);
+    this.weatherPanel.updateForecastData(this.data.forecast, language[lang].nameWeek);
   }
 
   async createApp() {
@@ -98,7 +99,7 @@ export class App {
         this.data.weather.humidity,
         this.data.weather.icon
       );
-      this.weatherPanel.updateForecastData(this.data.forecast);
+      this.weatherPanel.updateForecastData(this.data.forecast, language[this.language].nameWeek);
       this.mapBlock.updateMap(this.data.coordinate.lng, this.data.coordinate.ltd);
       this.showApp();
     }, 0);

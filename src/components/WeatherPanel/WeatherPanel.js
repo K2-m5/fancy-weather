@@ -1,20 +1,8 @@
 /* eslint-disable camelcase */
 import { createElement } from '../../utils/createElement';
-import * as dayjs from 'dayjs';
 import { changeKtoC, changeKtoF, updateTemperature } from '../../utils/changeTempDimension';
 
 import './WeatherPanel.css';
-import language from '../../utils/words';
-
-const dayToLabelMap = {
-  0: 'Sunday',
-  1: 'Monday',
-  2: 'Tuesday',
-  3: 'Wednesday',
-  4: 'Thursday',
-  5: 'Friday',
-  6: 'Saturday',
-};
 
 export default class WeatherPanel {
   constructor() {
@@ -45,11 +33,11 @@ export default class WeatherPanel {
 
   updateWeatherData(city, tempToday, weather, feels, wind, humidity, weatherImgCode) {
     this.weatherCity.innerText = city;
-    this.weatherTodayTemp.innerText.value = tempToday;
+    this.weatherTodayTemp.value.innerText = tempToday;
     this.weatherTodayWeather.innerText = weather;
-    this.weatherTodayFeels.innerText.value = feels;
-    this.weatherTodayWind.innerText.value = wind;
-    this.weatherTodayHumidity.innerText.value = humidity;
+    this.weatherTodayFeels.value.innerText = feels;
+    this.weatherTodayWind.value.innerText = wind;
+    this.weatherTodayHumidity.value.innerText = humidity;
     this.weatherTodayImg.setAttribute('src', `assets/img/${weatherImgCode}.svg`);
   }
 
@@ -73,9 +61,6 @@ export default class WeatherPanel {
     this.weatherTodayFeels.key.innerText = lang.feelsLike;
     this.weatherTodayWind.key.innerText = lang.wind;
     this.weatherTodayHumidity.key.innerText = lang.humidity;
-    document.querySelectorAll('.text_base day_block--name').forEach((el, i) => {
-      el.innerHTML += lang.nameWeek[i];
-    });
   }
 
   createWeatherTodayBlock(rootElement, currentWeather, next3DaysWeather, text) {
@@ -119,16 +104,16 @@ export default class WeatherPanel {
   createDayForecastBlock(forecast, nameWeek) {
     for (let i = 0; i < forecast.length; i += 1) {
       const {
+        dt_txt,
         main: { temp },
         weather,
       } = forecast[i];
 
-      let dayNumber = dayjs()
-        .add(i + 1, 'day')
-        .day();
+      const date = new Date(dt_txt);
+
       this.createDayWeatherItem(
         this.weatherNextDayList,
-        nameWeek[dayNumber],
+        nameWeek[date.getDay()],
         temp,
         weather[0].icon
       );
@@ -137,6 +122,7 @@ export default class WeatherPanel {
   }
 
   updateForecastData(next3DaysWeather, nameWeek) {
+    const arrWeekName = document.querySelectorAll('.day_block--name');
     for (let i = 0; i < next3DaysWeather.length; i += 1) {
       const {
         dt_txt,
@@ -144,7 +130,7 @@ export default class WeatherPanel {
         weather,
       } = next3DaysWeather[i];
       const date = new Date(dt_txt);
-      this.weekDay.innerText = nameWeek[date.getDay()];
+      arrWeekName[i].innerText = nameWeek[date.getDay()];
       this.temperature.innerText = Math.round(temp);
       this.image.setAttribute('src', `assets/img/${weather[0].icon}.svg`);
     }
@@ -152,15 +138,17 @@ export default class WeatherPanel {
 
   createDayWeatherItem(container, day, temp, imageCode) {
     const dayRoot = createElement('div', 'day_block');
-    this.weekDay = createElement('div', 'text_base', 'day_block--name');
+    const weekDay = createElement('div', 'text_base', 'day_block--name');
     this.temperature = createElement('div', 'text_base', 'day_block--temp');
+    const tempSymbol = createElement('span', 'text_base', 'day_block--temp-symbol');
     this.image = createElement('img', 'day_block--sign');
 
-    this.weekDay.innerText = day;
+    weekDay.innerText = day;
+    tempSymbol.innerText = '°';
     this.temperature.innerText = Math.round(temp);
     this.image.setAttribute('src', `assets/img/${imageCode}.svg`);
 
-    dayRoot.append(this.weekDay, this.temperature, this.image);
+    dayRoot.append(weekDay, this.temperature, tempSymbol, this.image);
 
     container.appendChild(dayRoot);
   }
@@ -177,9 +165,9 @@ export default class WeatherPanel {
   CtoF() {
     const newArr = [];
     document
-      .querySelectorAll('.day_block--temp-item')
-      .forEach((el) => newArr.push(changeKtoC(Number(el.innerHTML))));
-    this.weatherTodayTemp.innerText = changeKtoC(this.weatherTodayTemp.innerText);
+      .querySelectorAll('.day_block--temp')
+      .forEach((el) => newArr.push(changeKtoC(parseInt(el.innerText, 10))));
+    this.weatherTodayTemp.value.innerText = changeKtoC(this.weatherTodayTemp.value.innerText);
     updateTemperature(newArr);
   }
 
@@ -187,8 +175,8 @@ export default class WeatherPanel {
     const newArr = [];
     document
       .querySelectorAll('.day_block--temp')
-      .forEach((el) => newArr.push(changeKtoF(Number(el.innerHTML))));
-    this.weatherTodayTemp.innerText = changeKtoF(this.weatherTodayTemp.innerText);
+      .forEach((el) => newArr.push(changeKtoF(parseInt(el.innerText, 10))));
+    this.weatherTodayTemp.value.innerText = changeKtoF(this.weatherTodayTemp.value.innerText);
     updateTemperature(newArr);
   }
 }

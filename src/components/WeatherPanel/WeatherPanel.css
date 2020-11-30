@@ -98,7 +98,7 @@
   display: flex;
   justify-content: space-around;
   margin: 5px;
-  padding: 15px;
+  padding: 10px 10px 0;
   border-radius: 5px;
   background-color: #4c525566;
   border: 1px solid #fff;
@@ -118,16 +118,26 @@
   font-size: 1em;
 }
 
-.day_block--temp {
+.day_block--temp,
+.day_block--temp-symbol {
   align-self: center;
-  font-size: 2em;
+  font-size: 1.7em;
 }
 
 .day_block--sign {
   width: 60%;
+  overflow: hidden;
 }
 
 @media (max-width: 930px) {
+  .day_block--name {
+    font-size: 0.8em;
+  }
+  .day_block--temp,
+  .day_block--temp-symbol {
+    font-size: 1.3em;
+  }
+
   .info_list--item-key {
     font-size: 0.9em;
   }
