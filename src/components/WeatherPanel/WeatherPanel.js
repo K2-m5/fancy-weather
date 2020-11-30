@@ -123,6 +123,8 @@ export default class WeatherPanel {
 
   updateForecastData(next3DaysWeather, nameWeek) {
     const arrWeekName = document.querySelectorAll('.day_block--name');
+    const arrTemp = document.querySelectorAll('.day_block--temp');
+    const arrImage = document.querySelectorAll('.day_block--sign');
     for (let i = 0; i < next3DaysWeather.length; i += 1) {
       const {
         dt_txt,
@@ -130,25 +132,26 @@ export default class WeatherPanel {
         weather,
       } = next3DaysWeather[i];
       const date = new Date(dt_txt);
+      this.tempSymbol.innerText = '°';
       arrWeekName[i].innerText = nameWeek[date.getDay()];
-      this.temperature.innerText = Math.round(temp);
-      this.image.setAttribute('src', `assets/img/${weather[0].icon}.svg`);
+      arrTemp[i].innerText = Math.round(temp);
+      arrImage[i].setAttribute('src', `assets/img/${weather[0].icon}.svg`);
     }
   }
 
   createDayWeatherItem(container, day, temp, imageCode) {
     const dayRoot = createElement('div', 'day_block');
     const weekDay = createElement('div', 'text_base', 'day_block--name');
-    this.temperature = createElement('div', 'text_base', 'day_block--temp');
-    const tempSymbol = createElement('span', 'text_base', 'day_block--temp-symbol');
-    this.image = createElement('img', 'day_block--sign');
+    const temperature = createElement('div', 'text_base', 'day_block--temp');
+    this.tempSymbol = createElement('span', 'text_base', 'day_block--temp-symbol');
+    const image = createElement('img', 'day_block--sign');
 
     weekDay.innerText = day;
-    tempSymbol.innerText = '°';
-    this.temperature.innerText = Math.round(temp);
-    this.image.setAttribute('src', `assets/img/${imageCode}.svg`);
+    this.tempSymbol.innerText = '°';
+    temperature.innerText = Math.round(temp);
+    image.setAttribute('src', `assets/img/${imageCode}.svg`);
 
-    dayRoot.append(weekDay, this.temperature, tempSymbol, this.image);
+    dayRoot.append(weekDay, temperature, this.tempSymbol, image);
 
     container.appendChild(dayRoot);
   }
