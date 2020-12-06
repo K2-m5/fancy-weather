@@ -57,7 +57,7 @@ export class App {
   }
 
   async createApp() {
-    await this.api.getData();
+    await this.api.initData();
 
     setTimeout(() => {
       this.hideLouder();

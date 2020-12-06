@@ -27,14 +27,10 @@ export default class ApiService {
     }
   }
 
-  async getDataPlace() {
-    const dataPlace = await this.userPlaceApi.getPlaceByIp();
-    this.data.city = dataPlace.city;
-    this.data.region = dataPlace.region;
-    this.data.country = dataPlace.country;
-    this.data.timezone = dataPlace.timezone;
-    this.data.coordinate.ltd = dataPlace.loc.slice(0, dataPlace.loc.indexOf(','));
-    this.data.coordinate.lng = dataPlace.loc.slice(dataPlace.loc.indexOf(',') + 1);
+  async getDataPlace(lang) {
+    const dataCity = await this.userPlaceApi.getPlaceByIp();
+    const dataPlace = await this.placeCrdApi.getCoordinateByPlace(dataCity.city, lang);
+    this.provideDataPlace(dataPlace);
   }
 
   getForecast(dataForecast) {
@@ -60,25 +56,27 @@ export default class ApiService {
     this.data.forecast = this.getForecast(dataForecast.list);
   }
 
-  async getDataWeather() {
+  async getDataWeather(lang, units) {
     const {
       coordinate: { lng, ltd },
     } = this.data;
-    const dataWeather = await this.weatherApi.getDataWeather(lng, ltd);
-    const dataForecast = await this.weatherApi.getDataForecast(lng, ltd);
+    const dataWeather = await this.weatherApi.getDataWeather(lng, ltd, lang, units);
+    const dataForecast = await this.weatherApi.getDataForecast(lng, ltd, lang, units);
     this.provideDataWeather(dataWeather, dataForecast);
   }
 
   async getDataUserRequest(city) {
-    const dataPlace = await this.placeCrdApi.getCoordinateByPlace(city);
+    const lang = ApiService.getLanguage();
+    const units = ApiService.getUnits();
+    const dataPlace = await this.placeCrdApi.getCoordinateByPlace(city, lang);
     if (dataPlace) {
       this.provideDataPlace(dataPlace);
     } else {
       return;
     }
     await this.getImage(city);
-    const dataWeather = await this.weatherApi.getDataWeatherByCity(city);
-    const dataForecast = await this.weatherApi.getDataForecastByCity(city);
+    const dataWeather = await this.weatherApi.getDataWeatherByCity(city, lang, units);
+    const dataForecast = await this.weatherApi.getDataForecastByCity(city, lang, units);
     if (dataWeather && dataForecast) {
       this.provideDataWeather(dataWeather, dataForecast);
       console.log(this.data);
@@ -87,19 +85,33 @@ export default class ApiService {
     }
   }
 
-  provideDataPlace(crd) {
-    this.data.city = crd.results[0].components.city;
-    this.data.region = crd.results[0].components.country;
-    this.data.country = crd.results[0].components.country;
-    this.data.timezone = crd.results[0].annotations.timezone.name;
-    this.data.coordinate.ltd = String(crd.results[0].geometry.lat);
-    this.data.coordinate.lng = String(crd.results[0].geometry.lng);
+  provideDataPlace(dataPlace) {
+    this.data.city = dataPlace.results[0].components.city;
+    this.data.region = dataPlace.results[0].components.country;
+    this.data.country = dataPlace.results[0].components.country;
+    this.data.timezone = dataPlace.results[0].annotations.timezone.name;
+    this.data.coordinate.ltd = String(dataPlace.results[0].geometry.lat);
+    this.data.coordinate.lng = String(dataPlace.results[0].geometry.lng);
   }
 
-  async getData() {
-    await this.getDataPlace();
+  async initData() {
+    const lang = ApiService.getLanguage();
+    const units = ApiService.getUnits();
+    await this.getDataPlace(lang);
     await this.getImage(this.data.city);
-    await this.getDataWeather();
+    await this.getDataWeather(lang, units);
     console.log(this.data);
+  }
+
+  static getUnits() {
+    if (localStorage.getItem('temperature') === 'F') {
+      return 'imperial';
+    }
+    return 'metric';
+  }
+
+  static getLanguage() {
+    if (localStorage.getItem('language') === 'by') return 'ru';
+    return localStorage.getItem('language');
   }
 }
